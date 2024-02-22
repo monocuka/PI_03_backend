@@ -30,9 +30,9 @@ public class ProductoService {
         productoRepository.deleteById(id);
     }
 
-    public List<Producto> listarProductos(){
-        return productoRepository.findAll();
-    }
+//    public List<Producto> listarProductos(){
+//        return productoRepository.findAll();
+//    }
 
     public Optional<Producto> buscarPorId(Long id){
         return productoRepository.findById(id);

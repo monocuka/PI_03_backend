@@ -22,5 +22,11 @@ public class Producto {
     private String descripcion;
     @Column
     private String[] imgs;
+    @Column
+    private Long precio;
+    @Column
+    private int cantidad;
+    @Column
+    private Categoria categoria;
 
 }
