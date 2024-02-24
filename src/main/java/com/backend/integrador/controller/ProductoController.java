@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,7 +16,7 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
-    @PostMapping()
+    @PostMapping("crear")
     public ResponseEntity<Producto> registrarProducto(@RequestBody Producto p){
         return ResponseEntity.ok(productoService.guardarProducto(p));
     }
@@ -45,6 +46,11 @@ public class ProductoController {
            productoService.eliminarProducto(id);
            return ResponseEntity.ok("Producto " + productoABorrar.get().getNombre() + " fue eliminado.");
         }
-        return ResponseEntity.badRequest().body("El paciente que se quiere eliminar no existe.");
+        return ResponseEntity.badRequest().body("El producto que se quiere eliminar no existe.");
+    }
+
+    @GetMapping("/all")
+    public List<Producto> listarProductos(){
+        return productoService.listarProductos();
     }
 }

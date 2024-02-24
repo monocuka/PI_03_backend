@@ -15,18 +15,20 @@ import lombok.Setter;
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
+    private int pro_id;
+    @Column(name = "pro_nombre")
     private String nombre;
-    @Column
+    @Column(name = "pro_codigo")
+    private String codigo;
+    @Column(name = "pro_descripcion")
     private String descripcion;
-    @Column
-    private String[] imgs;
-    @Column
-    private Long precio;
-    @Column
+   // @Column(name = )
+   // private String[] imgs;
+    @Column(name = "pro_precio")
+    private Double precio;
+    @Column(name = "pro_cantidad")
     private int cantidad;
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "pro_idcategoria")
     private Categoria categoria;
-
 }
