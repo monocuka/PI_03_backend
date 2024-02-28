@@ -1,19 +1,26 @@
 package com.backend.integrador.controllers;
 
 import com.backend.integrador.Entity.Producto;
+import com.backend.integrador.service.ImagenProductoService;
 import com.backend.integrador.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ImagenProductoService imagenProductoService;
 
     @GetMapping
     public List<Producto> findAll(){
@@ -21,8 +28,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Producto> createProduct(@RequestBody Producto p){
-        return ResponseEntity.ok(productService.createProduct(p));
+    public ResponseEntity<Producto> createProduct(@RequestPart("producto") String pString,
+                                                  @RequestPart("imagen") MultipartFile imagen) throws IOException{
+        ObjectMapper mapper = new ObjectMapper();
+        Producto p = mapper.readValue(pString, Producto.class);
+        Producto newP = productService.createProduct(p);
+        imagenProductoService.guardarImagenProducto(p, imagen);
+        return ResponseEntity.ok(newP);
     }
 
     @GetMapping("/{id}")

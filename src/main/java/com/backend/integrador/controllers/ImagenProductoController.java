@@ -12,16 +12,16 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/imagenes")
+@RequestMapping("/images")
 public class ImagenProductoController {
     @Autowired
     private ImagenProductoService imagenProductoService;
 
-    @PostMapping("crear")
+   /* @PostMapping
     public ResponseEntity<ImagenProducto> registrarImagen(@RequestBody ImagenProducto i){
         return ResponseEntity.ok(imagenProductoService.guardarImagenProducto(i));
-    }
-    @GetMapping("buscar/{id}")
+    }*/
+    @GetMapping("/{id}")
     public ResponseEntity<ImagenProducto> buscarPorId(@PathVariable int id){
         Optional<ImagenProducto> ImagenProductoOptional = imagenProductoService.buscarPorid(id);
         if(ImagenProductoOptional.isPresent()){
@@ -30,7 +30,7 @@ public class ImagenProductoController {
         }
         return ResponseEntity.notFound().build();
     }
-    @DeleteMapping("eliminar/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarProducto(@PathVariable int id){
         Optional<ImagenProducto> imagenProducto = imagenProductoService.buscarPorid(id);
         if (imagenProducto.isPresent()){
@@ -39,8 +39,8 @@ public class ImagenProductoController {
         }
         return ResponseEntity.badRequest().body("El producto que se quiere eliminar no existe.");
     }
-    @GetMapping("/all")
-    public List<ImagenProducto> listarProductos(){
+    @GetMapping()
+    public List<ImagenProducto> listarImagenes(){
         return imagenProductoService.listarImagenes();
     }
 }

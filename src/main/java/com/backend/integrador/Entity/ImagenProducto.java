@@ -17,10 +17,17 @@ public class ImagenProducto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ima_id")
     private int id;
-    @Column(name = "ima_idproducto")
-    private int idProducto;
+    @ManyToOne
+    @JoinColumn(name = "ima_idproducto")
+    private Producto producto;
     @Column(name = "ima_link")
     private String url;
     @Column(name = "ima_descripcion")
     private String descripcion;
+
+    public ImagenProducto(Producto p, String url, String descripcion){
+        this.producto = p;
+        this.url = url;
+        this.descripcion = descripcion;
+    }
 }

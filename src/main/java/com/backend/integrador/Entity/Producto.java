@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -22,8 +24,6 @@ public class Producto {
     private String codigo;
     @Column(name = "pro_descripcion")
     private String descripcion;
-   // @Column(name = )
-   // private String[] imgs;
     @Column(name = "pro_precio")
     private Double precio;
     @Column(name = "pro_cantidad")
