@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,20 +26,24 @@ public class ImagenProductoService {
     public ImagenProducto guardarImagenProducto(Producto p, MultipartFile imagen){
         String filename = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
         // Ruta del projecto
-        final String pathInicial = System.getProperty("user.dir");
-        final String pathProyecto = "/src/main/resources/static/images/" + filename;
-        final String pathCompleto = pathInicial + pathProyecto;
-        ImagenProducto i = new ImagenProducto(p, pathProyecto, "");
-        Path path = Paths.get(pathCompleto);
+        //final String pathInicial = System.getProperty("user.dir"); // armar la ruta para quien sea que comparta pantalla
+        //ej: "C:\Proyecto integrador\Front\Proyecto_integrador_e3\src\assets\img"
+        // "C:" + File.separator + "Proyecto Integrador" + File.separator + "Front" + File.separator + "Proyecto_integrador_e3" +  File.separator + "src" + File.separator + "assets" + File.separator + "img" + File.separator"
+        //final String pathProyecto = File.separator + "src" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator + filename;
+        ///home/nahuel/Desktop/Proyecto Integrador/Front/Proyecto_integrador_e3/src/assets
+        final String pathProyecto = File.separator + "home" + File.separator + "nahuel" + File.separator + "Desktop" + File.separator + "Proyecto Integrador" + File.separator + "Front" + File.separator + "Proyecto_integrador_e3" + File.separator + "src" + File.separator + "assets" + File.separator + "img" + File.separator + filename;
+        ///home/nahuel/Desktop/                                                                                                             Proyecto Integrador/Front/Proyecto_integrador_e3/src/assets/img
+        //final String pathCompleto = pathInicial + pathProyecto;
+        ImagenProducto i = new ImagenProducto(p, filename, "");
+        Path path = Paths.get(pathProyecto);
 
         try{
             Files.write(path, imagen.getBytes());
+            System.out.println(path);
             return ImagenProductoRepository.save(i);
         } catch (IOException e) {
             return null;
         }
-
-
     }
     @Transactional
     public void actualizarImagenProducto(ImagenProducto i){
@@ -55,6 +60,8 @@ public class ImagenProductoService {
     public List<ImagenProducto> listarImagenes(){
         return ImagenProductoRepository.findAll();
     }
+
+
 
 
 }
