@@ -9,4 +9,6 @@ public interface ImagenProductoRepository extends JpaRepository<ImagenProducto, 
 
     Optional<ImagenProducto> deleteById(int id);
     Optional<ImagenProducto> findById(int id);
+
+
 }
