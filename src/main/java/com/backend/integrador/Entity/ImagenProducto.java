@@ -1,33 +1,31 @@
-package com.backend.integrador.Entity;
+package com.backend.integrador.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
+@Table( name = "imagen_procducto")
+@Data
 @NoArgsConstructor
-@Table(name = "imagen_producto")
+@AllArgsConstructor
 public class ImagenProducto {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ima_id")
-    private int id;
-    @ManyToOne
-    @JoinColumn(name = "ima_idproducto")
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @Column( name = "ima_id")
+    private Long id;
+    @Column( name = "ima_link")
+    private  String urlImagen;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ima_idproducto", nullable = false)
     private Producto producto;
-    @Column(name = "ima_link")
-    private String url;
-    @Column(name = "ima_descripcion")
-    private String descripcion;
-
-    public ImagenProducto(Producto p, String url, String descripcion){
-        this.producto = p;
-        this.url = url;
-        this.descripcion = descripcion;
-    }
 }

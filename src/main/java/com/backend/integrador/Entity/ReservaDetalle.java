@@ -13,23 +13,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table( name = "producto")
+@Table( name = "reserva_detalle")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Producto {
+public class ReservaDetalle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column( name = "pro_id")
-    private  Long id;
-    @Column( name = "pro_nombre")
-    private String nombre;
-    @Column( name = "pro_descripcion")
-    private String descripcion;
-    @Column( name = "pro_precio")
-    private Double precio;
-    
+    @Column( name = "resd_id" )
+    private Long id;
+    @Column( name = "resd_codigo" )
+    private String codigo;
+    @Column( name = "resd_precio_unitario" )
+    private double resd_precio_unitario;
+    @Column( name = "resd_cantidad" )
+    private int resd_cantidad;
+
     @ManyToOne
-    @JoinColumn(name = "pro_idcategoria", nullable = false)
-    private Categoria categoria;   
+    @JoinColumn(name = "resd_idproducto", nullable = false)
+    private Producto producto;
+
+    @ManyToOne
+    @JoinColumn(name = "resd_idreserva", nullable = false)
+    private Reserva reserva;
 }
