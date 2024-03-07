@@ -3,6 +3,7 @@ package com.backend.integrador.service.imp;
 import java.util.Collections;
 import java.util.List;
 
+import com.backend.integrador.excepciones.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,13 +83,29 @@ public class ProductoServiceImp implements IProductoService{
     }
 
     @Override
-    public ProductoDTO modificarProducto(ProductoDTO productoDTO) {
-        // Producto productoBuscado = productoRepository.findById(productoDTO.getId()).orElse(null);
+    public ProductoSalidaDTO modificarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ProductoEntradaDTO productoEntradaDTO = objectMapper.readValue(productoStr, ProductoEntradaDTO.class);
+            Categoria categoria = categoriaService.obtenerCategoriaPorId(productoEntradaDTO.getCategoria().getId()); // preguntarle a juan, el sobre el comment en CategoriaEntradaDTO
+            Producto productoGuardado = productoRepository.save(ProductoMapper.toProducto(productoEntradaDTO, categoria));
+            ImagenProducto imagenConProducto = imagenProductoServices.guardaImagenProducto(imagen, productoGuardado);
+            List<ImagenProducto> listaDeImagenes = Collections.singletonList(imagenConProducto);
+            return ProductoMapper.toProductoSalidaDTO(productoGuardado, listaDeImagenes);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 
-        // if(productoBuscado == null) return null;
-
-        // return productoRepository.save(producto);
-        return null;
+    @Override
+    public ProductoSalidaDTO buscarPorNombre(String nombre){
+        Producto producto = productoRepository.findByNombre(nombre);
+        List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
+        if (producto == null) {
+            throw new ResourceNotFoundException("Product with name " + nombre + " not found");
+        }
+        return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
     }
    
 }

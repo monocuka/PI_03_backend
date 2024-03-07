@@ -8,4 +8,6 @@ import com.backend.integrador.entity.Categoria;
 
 @Repository
 public interface ICategoriaRepository extends JpaRepository<Categoria, Long>{
+
+
 }

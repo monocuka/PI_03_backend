@@ -19,3 +19,7 @@ public class ProductoEntradaDTO {
     private Double precio;
     private CategoriaEntradaDTO categoria; 
 }
+
+
+
+

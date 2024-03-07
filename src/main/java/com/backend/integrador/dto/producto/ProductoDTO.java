@@ -2,6 +2,7 @@ package com.backend.integrador.dto.producto;
 
 import java.io.Serializable;
 
+
 import com.backend.integrador.entity.Categoria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -20,6 +21,6 @@ public class ProductoDTO implements Serializable{
     private String nombre;
     private String descripcion;
     private Double precio;
-    private Categoria categoria; 
+    private Categoria categoria;
 }
 

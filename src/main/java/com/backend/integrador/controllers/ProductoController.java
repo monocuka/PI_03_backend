@@ -2,6 +2,8 @@ package com.backend.integrador.controllers;
 
 import java.util.List;
 
+import com.backend.integrador.dto.producto.ProductoDTO;
+import com.backend.integrador.dto.producto.mapper.ProductoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,7 @@ public class ProductoController {
                                                 @RequestParam("imagen") MultipartFile imagen) {
         try {
             ProductoSalidaDTO productoSalidaDTO = productoService.guardarProducto(productoStr, imagen);
+            System.out.println(imagen);
             return new ResponseEntity<>(productoSalidaDTO, HttpStatus.CREATED);
         } catch (JsonProcessingException e) {
             // Si la imagen no se encuentra, devolver un 404 Not Found junto con un JSON
@@ -52,6 +55,7 @@ public class ProductoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerProductoPorId(@PathVariable Long id) {
+        System.out.println("Getmapping by id");
         ProductoSalidaDTO productoSalidaDTO = productoService.obtenerProductoPorId(id);
         if (productoSalidaDTO != null) {
             return ResponseEntity.ok().body(productoSalidaDTO);
@@ -63,7 +67,12 @@ public class ProductoController {
                     .body(errorResponse);
         }
     }
-    
+
+    @GetMapping("/buscarNombre/{nombre}")
+    public ProductoSalidaDTO buscarPorProducto(@PathVariable String nombre){
+        return productoService.buscarPorNombre(nombre);
+    }
+
     @PostMapping("/prueba")
     public String prueba() {
         return "Todo funcioanndo";

@@ -14,5 +14,7 @@ public interface IProductoService {
     public ProductoSalidaDTO obtenerProductoPorId(Long id);
     public List<ProductoSalidaDTO> obtenerTodosLosProductos();
     public void eliminarProducto(Long idProducto);
-    public ProductoDTO modificarProducto(ProductoDTO productoDTO);
+    public ProductoSalidaDTO modificarProducto(String productoStr, MultipartFile imagen)throws JsonMappingException, JsonProcessingException;
+
+    public ProductoSalidaDTO buscarPorNombre(String nombre);
 }

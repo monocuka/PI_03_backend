@@ -1,13 +1,17 @@
 package com.backend.integrador.service.imp;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.service.ICategoriaService;
+
+import static com.backend.integrador.dto.categoria.mapper.CategoriaMapper.toCategoriaSalidaDTO;
 
 
 @Service
@@ -27,8 +31,12 @@ public class CategoriaServiceImp implements ICategoriaService{
     }
 
     @Override
-    public List<Categoria> obtenerTodosLosCategorias() {
-        return categoriaRepository.findAll();
+    public List<CategoriaSalidaDTO> obtenerTodosLosCategorias() {
+        List<Categoria> categorias = categoriaRepository.findAll();
+
+        return categorias.stream()
+                .map(categoria -> toCategoriaSalidaDTO(categoria))
+                .collect(Collectors.toList());
     }
 
     @Override

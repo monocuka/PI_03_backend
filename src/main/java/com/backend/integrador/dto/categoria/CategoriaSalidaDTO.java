@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoriaEntradaDTO {
-    private Long id; // Para mi esto no deberia de ir en el caso de que el admin pueda crear nuevas categorias.
+public class CategoriaSalidaDTO {
+    private Long id;
     private String nombre;
     private String descripcion;
 }
 
 /*
-* Lo que recibimos del front
+* Es lo que se le envia al front
 * */
