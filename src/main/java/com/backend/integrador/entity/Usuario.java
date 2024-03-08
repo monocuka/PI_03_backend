@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cliente {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( name = "cli_id")
@@ -41,7 +41,7 @@ public class Cliente {
     @Column( name = "cli_cedula")
     private int cedula;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval=true)
     private Set<Reserva> reservas;
     
 }

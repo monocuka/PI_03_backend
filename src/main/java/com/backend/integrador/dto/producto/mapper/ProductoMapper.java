@@ -21,7 +21,7 @@ public class ProductoMapper {
     }
 
     public static Producto toProducto(ProductoEntradaDTO productoEntradaDTO, Categoria categoria){
-        Producto producto = new Producto();
+        Producto producto = new Producto(); // y el id? como sabe la base cual es este producto?
         producto.setNombre(productoEntradaDTO.getNombre());
         producto.setDescripcion(productoEntradaDTO.getDescripcion());
         producto.setPrecio(productoEntradaDTO.getPrecio());

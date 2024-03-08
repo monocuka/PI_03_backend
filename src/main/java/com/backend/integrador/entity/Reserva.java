@@ -34,7 +34,7 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "res_cliente", nullable = false)
-    private Cliente cliente;
+    private Usuario usuario;
 
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval=true)
     private Set<ReservaDetalle> reservaDetalles;

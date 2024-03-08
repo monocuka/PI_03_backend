@@ -2,12 +2,16 @@ package com.backend.integrador.service;
 
 import java.util.List;
 
-import com.backend.integrador.entity.Cliente;
+import com.backend.integrador.dto.cliente.UsuarioRegistrarDTO;
+import com.backend.integrador.dto.cliente.UsuarioSalidaDTO;
+import com.backend.integrador.entity.Usuario;
 
 public interface IClienteService {
-    public Cliente guardaCliente(Cliente cliente);
-    public Cliente obtenerClientePorId(Long id);
-    public List<Cliente> obtenerTodosLosClientes();
+    public UsuarioSalidaDTO guardaCliente(UsuarioRegistrarDTO cliente);
+    public Usuario obtenerClientePorId(Long id);
+    public List<UsuarioSalidaDTO> obtenerTodosLosClientes();
     public void eliminarCliente(Long idCliente);
+
+    UsuarioSalidaDTO buscarPorEmail(String email);
 }
 
