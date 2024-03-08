@@ -90,5 +90,17 @@ public class ProductoServiceImp implements IProductoService{
         // return productoRepository.save(producto);
         return null;
     }
+
+    @Override
+    public List<ProductoSalidaDTO> obtenerProductosAleatorios() {
+        List<Producto> listaDeProductosAleatorios = productoRepository.obtenerProductosAleatorios();
+
+        return listaDeProductosAleatorios.stream()
+                .map(producto -> {
+                    List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
+                    return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
+                })
+                .toList();
+    }
    
 }

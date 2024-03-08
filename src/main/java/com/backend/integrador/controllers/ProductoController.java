@@ -64,6 +64,11 @@ public class ProductoController {
         }
     }
     
+    @GetMapping("/productosRecomendados")
+    public ResponseEntity<List<ProductoSalidaDTO>> obtenerProductosRecomendados(){
+        return ResponseEntity.ok().body(productoService.obtenerProductosAleatorios());
+    }
+
     @PostMapping("/prueba")
     public String prueba() {
         return "Todo funcioanndo";
