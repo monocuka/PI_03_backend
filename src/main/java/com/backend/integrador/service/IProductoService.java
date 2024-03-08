@@ -15,4 +15,5 @@ public interface IProductoService {
     public List<ProductoSalidaDTO> obtenerTodosLosProductos();
     public void eliminarProducto(Long idProducto);
     public ProductoDTO modificarProducto(ProductoDTO productoDTO);
+    public List<ProductoSalidaDTO> obtenerProductosAleatorios();
 }
