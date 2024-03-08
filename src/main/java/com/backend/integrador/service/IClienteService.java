@@ -12,6 +12,6 @@ public interface IClienteService {
     public List<UsuarioSalidaDTO> obtenerTodosLosClientes();
     public void eliminarCliente(Long idCliente);
 
-    UsuarioSalidaDTO buscarPorEmail(String email);
+    Usuario buscarPorEmail(String email);
 }
 

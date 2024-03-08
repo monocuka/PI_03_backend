@@ -53,12 +53,12 @@ public class ClienteServiceImp implements IClienteService{
     }
 
     @Override
-    public UsuarioSalidaDTO buscarPorEmail(String email){
+    public Usuario buscarPorEmail(String email){
         Usuario usuario = clienteRepository.findByEmail(email);
         if (usuario == null){
             return null;
         }
-        return UsuarioMapper.toUsuarioSalidaDTO(usuario, usuario.getReservas());
+        return usuario;
     }
     
 }

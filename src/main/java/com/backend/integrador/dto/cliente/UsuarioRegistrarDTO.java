@@ -16,7 +16,6 @@ public class UsuarioRegistrarDTO {
     private String direccion;
     private String ciudad;
     private int cedula;
-
 }
 
 
