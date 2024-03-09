@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -32,24 +34,30 @@ public class WebSecurityConfig {
         return (web) -> web.ignoring().requestMatchers("/test/**");
     }
 
-  @Bean // es por quien se van a enviar los token y recibir el que maneja los filtos
+    /*@Bean // es por quien se van a enviar los token y recibir el que maneja los filtos
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
 
     JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
     jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
     jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
-    return httpSecurity
-        .csrf(AbstractHttpConfigurer::disable) // Cross-site Request Forgery
-        .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated() ) // reglas de las request
-        .httpBasic(Customizer.withDefaults())
-            .sessionManagement(httpSecuritySessionManagementConfigurer -> {
-              httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            }).formLogin(Customizer.withDefaults())
-            .addFilter(jwtAuthenticationFilter)
-            .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)// habilitamos la autenticacion basica para que podamos enviar un usuario y una contraseña (esto luego se va a desabilitar)
-        .build();
-  }
+      return httpSecurity
+              .cors()
+              .and()
+              .csrf().disable()
+              .authorizeHttpRequests()
+              .anyRequest()
+              .authenticated()
+              .and()
+              .httpBasic()
+              .and()
+              .sessionManagement()
+              .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+              .and()
+              .addFilter(jwtAuthenticationFilter)
+              .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+              .build();
+  }*/
 
   @Bean
   public UserDetailsService userDetailsService(){// es un usuario como tal el que tiene permiso o no a acceder a los servicios de la api
@@ -59,14 +67,34 @@ public class WebSecurityConfig {
     return manager;
   }
 
-  public AuthenticationManager authManager(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-     authenticationManagerBuilder.userDetailsService(userDetailsService())
-            .passwordEncoder(passwordEncoder());
-     return authenticationManagerBuilder.build();
-  }
+  @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
+        return httpSecurity
+                .csrf().disable()
+                .authorizeHttpRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .build();
+    }
+
+    @Bean
+    AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        return http
+                .getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder()).and().build();
+    }
+
 
   @Bean
   public PasswordEncoder passwordEncoder(){
     return new BCryptPasswordEncoder();
   }
+
 }
