@@ -1,6 +1,6 @@
 package com.backend.integrador.security;
 
-import com.example.starwarsmongo.models.User;
+import com.backend.integrador.Entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,8 +1,8 @@
 package com.backend.integrador.security;
 
-import com.example.starwarsmongo.models.User;
-import com.example.starwarsmongo.repositories.UserRepository;
+import com.backend.integrador.Entity.User;
 import lombok.AllArgsConstructor;
+import com.backend.integrador.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
