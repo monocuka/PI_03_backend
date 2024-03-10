@@ -7,20 +7,13 @@ import com.backend.integrador.dto.producto.mapper.ProductoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.integrador.dto.error.ErrorResponseDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -44,7 +37,21 @@ public class ProductoController {
                     .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                     .body(errorResponse);
         }
-        
+    }
+    @PostMapping(value = "/actualizar", consumes = { "multipart/form-data" })
+    public ResponseEntity<?> actualizarProducto(@RequestParam("producto") String productoStr,
+                                                @RequestParam("imagen") MultipartFile imagen){
+        try {
+            ProductoSalidaDTO productoSalidaDTO = productoService.modificarProducto(productoStr, imagen);
+            System.out.println(imagen);
+            return new ResponseEntity<>(productoSalidaDTO, HttpStatus.CREATED);
+        } catch (JsonProcessingException e) {
+            // Si la imagen no se encuentra, devolver un 404 Not Found junto con un JSON
+            ErrorResponseDTO errorResponse = new ErrorResponseDTO("Error al subir la imagen");
+            return ResponseEntity
+                    .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                    .body(errorResponse);
+        }
     }
 
     @GetMapping("/")

@@ -41,6 +41,13 @@ public class ProductoServiceImp implements IProductoService{
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ProductoEntradaDTO productoEntradaDTO = objectMapper.readValue(productoStr, ProductoEntradaDTO.class);
+
+            // Verificar si el producto ya existe en la base de datos
+            Producto productoExistente = productoRepository.findByNombre(productoEntradaDTO.getNombre());
+            if (productoExistente != null) {
+                throw new IllegalArgumentException("Un producto con este nombre ya existe");
+            }
+
             Categoria categoria = categoriaService.obtenerCategoriaPorId(productoEntradaDTO.getCategoria().getId());
             Producto productoGuardado = productoRepository.save(ProductoMapper.toProducto(productoEntradaDTO, categoria));
             ImagenProducto imagenConProducto = imagenProductoServices.guardaImagenProducto(imagen, productoGuardado);
@@ -51,6 +58,32 @@ public class ProductoServiceImp implements IProductoService{
             throw e;
         }
     }
+    @Override
+    public ProductoSalidaDTO modificarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ProductoEntradaDTO productoEntradaDTO = objectMapper.readValue(productoStr, ProductoEntradaDTO.class);
+
+            Producto productoExistente = productoRepository.findByNombre(productoEntradaDTO.getNombre());
+            if (productoExistente == null) {
+                throw new ResourceNotFoundException("Product with name " + productoEntradaDTO.getNombre() + " not found");
+            }
+
+            Categoria categoria = categoriaService.obtenerCategoriaPorId(productoEntradaDTO.getCategoria().getId());
+            Producto productoAModificar = ProductoMapper.toProducto(productoEntradaDTO, categoria);
+            productoAModificar.setId(productoExistente.getId()); // Asegurarse de que el ID del producto existente se mantiene
+
+            Producto productoGuardado = productoRepository.save(productoAModificar);
+            ImagenProducto imagenConProducto = imagenProductoServices.guardaImagenProducto(imagen, productoGuardado);
+            List<ImagenProducto> listaDeImagenes = Collections.singletonList(imagenConProducto);
+            return ProductoMapper.toProductoSalidaDTO(productoGuardado, listaDeImagenes);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+
 
     @Override
     public ProductoSalidaDTO obtenerProductoPorId(Long id) {
@@ -82,29 +115,15 @@ public class ProductoServiceImp implements IProductoService{
         }
     }
 
-    @Override
-    public ProductoSalidaDTO modificarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            ProductoEntradaDTO productoEntradaDTO = objectMapper.readValue(productoStr, ProductoEntradaDTO.class);
-            Categoria categoria = categoriaService.obtenerCategoriaPorId(productoEntradaDTO.getCategoria().getId()); // preguntarle a juan, el sobre el comment en CategoriaEntradaDTO
-            Producto productoGuardado = productoRepository.save(ProductoMapper.toProducto(productoEntradaDTO, categoria));
-            ImagenProducto imagenConProducto = imagenProductoServices.guardaImagenProducto(imagen, productoGuardado);
-            List<ImagenProducto> listaDeImagenes = Collections.singletonList(imagenConProducto);
-            return ProductoMapper.toProductoSalidaDTO(productoGuardado, listaDeImagenes);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
+
 
     @Override
     public ProductoSalidaDTO buscarPorNombre(String nombre){
         Producto producto = productoRepository.findByNombre(nombre);
-        List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
         if (producto == null) {
             throw new ResourceNotFoundException("Product with name " + nombre + " not found");
         }
+        List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
         return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
     }
    
