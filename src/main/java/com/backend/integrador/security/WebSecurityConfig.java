@@ -34,7 +34,7 @@ public class WebSecurityConfig {
         return (web) -> web.ignoring().requestMatchers("/test/**");
     }
 
-    /*@Bean // es por quien se van a enviar los token y recibir el que maneja los filtos
+    @Bean // es por quien se van a enviar los token y recibir el que maneja los filtos
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
 
     JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
@@ -57,17 +57,17 @@ public class WebSecurityConfig {
               .addFilter(jwtAuthenticationFilter)
               .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
               .build();
-  }*/
+  }
 
-  @Bean
+  /*@Bean
   public UserDetailsService userDetailsService(){// es un usuario como tal el que tiene permiso o no a acceder a los servicios de la api
     // para autenticarnos contra una base de datos hay que realizar esta implementacion con el aceseso a la base de datos
     InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
     manager.createUser(User.withUsername("admin").password(passwordEncoder().encode("admin")).roles().build());
     return manager;
-  }
+  }*/
 
-  @Bean
+  /*@Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, AuthenticationManager authenticationManager) throws Exception {
         return httpSecurity
                 .csrf().disable()
@@ -81,13 +81,13 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .build();
-    }
+    }*/
 
     @Bean
     AuthenticationManager authManager(HttpSecurity http) throws Exception {
         return http
                 .getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService())
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder()).and().build();
     }
 

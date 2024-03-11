@@ -27,10 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
                         //.allowedOrigins("http://localhost:4200")
                         //.allowedMethods("*")
                         //.exposedHeaders("*");
-                registry.addMapping("/find/**");
-                registry.addMapping("/test/**")
-                        .allowedOrigins("http://localhost:4200")
-                        .allowedMethods("*");
+                //registry.addMapping("/find/**");
+               // registry.addMapping("/test/**")
+                //        .allowedOrigins("http://localhost:4200")
+                //        .allowedMethods("*");
             }
         };
     }
