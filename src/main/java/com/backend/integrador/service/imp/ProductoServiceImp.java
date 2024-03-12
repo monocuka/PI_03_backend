@@ -11,11 +11,13 @@ import com.backend.integrador.dto.producto.ProductoDTO;
 import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
+import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
 import com.backend.integrador.repository.IImagenProductoRepository;
 import com.backend.integrador.repository.IProductoRepository;
+import com.backend.integrador.service.ICaracteristicasService;
 import com.backend.integrador.service.ICategoriaService;
 import com.backend.integrador.service.IImagenProductoService;
 import com.backend.integrador.service.IProductoService;
@@ -34,14 +36,23 @@ public class ProductoServiceImp implements IProductoService{
     private IImagenProductoService imagenProductoServices;    
     @Autowired
     private ICategoriaService categoriaService;
+    @Autowired
+    private ICaracteristicasService caracteristicasService;
 
     @Override
     public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ProductoEntradaDTO productoEntradaDTO = objectMapper.readValue(productoStr, ProductoEntradaDTO.class);
+            // Obtengo la categoria
             Categoria categoria = categoriaService.obtenerCategoriaPorId(productoEntradaDTO.getCategoria().getId());
-            Producto productoGuardado = productoRepository.save(ProductoMapper.toProducto(productoEntradaDTO, categoria));
+            // Obtengo las caracteristicas
+            List<Caracteristica> caracteristicas = productoEntradaDTO.getCaracteristicas()
+                                                                    .stream()
+                                                                    .map( caracteristica -> caracteristicasService.obtenerCaracteristicaPorId(caracteristica.getId()))
+                                                                    .toList();
+            // Se guarda el producto
+            Producto productoGuardado = productoRepository.save(ProductoMapper.toProducto(productoEntradaDTO, categoria, caracteristicas));
             ImagenProducto imagenConProducto = imagenProductoServices.guardaImagenProducto(imagen, productoGuardado);
             List<ImagenProducto> listaDeImagenes = Collections.singletonList(imagenConProducto);
             return ProductoMapper.toProductoSalidaDTO(productoGuardado, listaDeImagenes);
