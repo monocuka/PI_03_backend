@@ -1,6 +1,6 @@
 package com.backend.integrador.repository;
 
-import com.backend.integrador.Entity.User;
+import com.backend.integrador.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

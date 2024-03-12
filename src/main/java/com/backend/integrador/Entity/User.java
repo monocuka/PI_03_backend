@@ -1,4 +1,4 @@
-package com.backend.integrador.Entity;
+package com.backend.integrador.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

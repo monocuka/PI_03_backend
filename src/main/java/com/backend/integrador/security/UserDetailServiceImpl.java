@@ -1,6 +1,6 @@
 package com.backend.integrador.security;
 
-import com.backend.integrador.Entity.User;
+import com.backend.integrador.entity.User;
 import lombok.AllArgsConstructor;
 import com.backend.integrador.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

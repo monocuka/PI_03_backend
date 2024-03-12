@@ -1,6 +1,6 @@
 package com.backend.integrador.service.imp;
 
-import com.backend.integrador.Entity.User;
+import com.backend.integrador.entity.User;
 import com.backend.integrador.dto.UserDto;
 import com.backend.integrador.repository.UserRepository;
 import lombok.AllArgsConstructor;
