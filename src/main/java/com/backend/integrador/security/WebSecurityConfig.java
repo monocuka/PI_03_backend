@@ -3,6 +3,7 @@ package com.backend.integrador.security;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,14 +23,10 @@ public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
-
+    
     @Bean // este endpoing es para omitirlo
     public WebSecurityCustomizer webSecurityCustomizer() {
-        // return (web) -> web.ignoring().requestMatchers("/test/**");
-        return (web) -> web.ignoring().requestMatchers(
-                          "/test/**", 
-                                      "/api/producto/"
-                                      );
+        return (web) -> web.ignoring().requestMatchers("/auth/**","/api/producto/");
     }
 
     @Bean // es por quien se van a enviar los token y recibir el que maneja los filtos
