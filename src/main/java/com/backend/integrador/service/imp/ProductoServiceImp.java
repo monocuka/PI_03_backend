@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.backend.integrador.dto.categoria.CategoriaEntradaDTO;
+import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
 import com.backend.integrador.dto.producto.ProductoDTO;
 import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
@@ -15,10 +17,10 @@ import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
+import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.repository.IImagenProductoRepository;
 import com.backend.integrador.repository.IProductoRepository;
 import com.backend.integrador.service.ICaracteristicasService;
-import com.backend.integrador.service.ICategoriaService;
 import com.backend.integrador.service.IImagenProductoService;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,7 +37,7 @@ public class ProductoServiceImp implements IProductoService{
     @Autowired
     private IImagenProductoService imagenProductoServices;    
     @Autowired
-    private ICategoriaService categoriaService;
+    private ICategoriaRepository categoriaRepository;
     @Autowired
     private ICaracteristicasService caracteristicasService;
 
@@ -45,7 +47,7 @@ public class ProductoServiceImp implements IProductoService{
             ObjectMapper objectMapper = new ObjectMapper();
             ProductoEntradaDTO productoEntradaDTO = objectMapper.readValue(productoStr, ProductoEntradaDTO.class);
             // Obtengo la categoria
-            Categoria categoria = categoriaService.obtenerCategoriaPorId(productoEntradaDTO.getCategoria().getId());
+            Categoria categoria = categoriaRepository.findById(productoEntradaDTO.getCategoria().getId()).orElse(null);
             // Obtengo las caracteristicas
             List<Caracteristica> caracteristicas = productoEntradaDTO.getCaracteristicas()
                                                                     .stream()
