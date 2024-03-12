@@ -69,7 +69,7 @@ public class ProductoController {
         return ResponseEntity.ok().body(productoService.obtenerProductosAleatorios());
     }
 
-    @PostMapping("/prueba")
+    @GetMapping("/prueba")
     public String prueba() {
         return "Todo funcioanndo";
     }
