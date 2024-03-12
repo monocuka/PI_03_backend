@@ -41,15 +41,16 @@ public class SecurityConfig {
 	}
 	
 	private RequestMatcher getPublicEndpoints() {
-		return new OrRequestMatcher(
-			new AntPathRequestMatcher("/api/auth/**"),
-			new AntPathRequestMatcher("/api/producto/"),
-			new AntPathRequestMatcher("/api/producto/{id}"),
-			new AntPathRequestMatcher("/api/imagenes/**")
-			);
+		
 		// return new OrRequestMatcher(
-		// 	new AntPathRequestMatcher("**")
+		// 	new AntPathRequestMatcher("/api/auth/**"),
+		// 	new AntPathRequestMatcher("/api/producto/listar"),
+		// 	new AntPathRequestMatcher("/api/producto/id/{id}"),
+		// 	new AntPathRequestMatcher("/api/imagenes/**")
 		// 	);
+		return new OrRequestMatcher(
+			new AntPathRequestMatcher("**")
+			);
 	}
 }
 

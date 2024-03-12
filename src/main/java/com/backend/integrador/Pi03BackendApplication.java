@@ -21,6 +21,8 @@ public class Pi03BackendApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		Categoria categoria1 = new Categoria(null, "Prueba", "Categoria de prueba");
 		categoriaRepository.save(categoria1);
+
+		
 	}
 
 }
