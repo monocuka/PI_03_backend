@@ -2,6 +2,8 @@ package com.backend.integrador.dto.producto.mapper;
 
 import java.util.List;
 
+import com.backend.integrador.dto.caracteristicas.CaracteristicaDTO;
+import com.backend.integrador.dto.categoria.CategoriaDTO;
 import com.backend.integrador.dto.imagen.ImagenSalidaDTO;
 import com.backend.integrador.dto.producto.ProductoDTO;
 import com.backend.integrador.dto.producto.ProductoEntradaDTO;
@@ -11,6 +13,7 @@ import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 
 public class ProductoMapper {
@@ -36,7 +39,22 @@ public class ProductoMapper {
     }
 
     public static ProductoSalidaDTO toProductoSalidaDTO(Producto producto, List<ImagenProducto> imagenesDelProducto){
-        ProductoSalidaDTO productoConImagenes = objectMapper.convertValue(producto, ProductoSalidaDTO.class);
+        objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        // ProductoSalidaDTO productoConImagenes = objectMapper.convertValue(producto, ProductoSalidaDTO.class);
+        ProductoSalidaDTO productoConImagenes = new ProductoSalidaDTO();
+        productoConImagenes.setId(producto.getId());
+        productoConImagenes.setNombre(producto.getNombre());
+        productoConImagenes.setDescripcion(producto.getDescripcion());
+        productoConImagenes.setPrecio(producto.getPrecio());
+        CategoriaDTO categoriaDTO = new CategoriaDTO(producto.getCategoria().getId(), producto.getCategoria().getNombre(), producto.getCategoria().getDescripcion());
+        productoConImagenes.setCategoria(categoriaDTO);
+
+        List<CaracteristicaDTO> caracteristicasDTO = producto.getCaracteristicas()
+                                                                .stream()
+                                                                .map( caracteristica -> new CaracteristicaDTO(caracteristica.getId(), caracteristica.getNombre(), caracteristica.getIcono()))
+                                                                .toList();
+        productoConImagenes.setCaracteristicas(caracteristicasDTO);
+
         List<ImagenSalidaDTO> imagenesSalida = imagenesDelProducto.stream()
                 .map(imagenProducto -> objectMapper.convertValue(imagenProducto, ImagenSalidaDTO.class))
                 .toList();

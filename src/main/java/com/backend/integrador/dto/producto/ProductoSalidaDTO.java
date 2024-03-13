@@ -1,6 +1,5 @@
 package com.backend.integrador.dto.producto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductoSalidaDTO  implements Serializable{
-    private static  final long serialVersionUID = 1L;
+public class ProductoSalidaDTO{
     private Long id;
     private String nombre;
     private String descripcion;
