@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.backend.integrador.dto.caracteristicas.CaracteristicaDTO;
 import com.backend.integrador.dto.categoria.CategoriaDTO;
 import com.backend.integrador.dto.imagen.ImagenSalidaDTO;
 
@@ -22,4 +23,5 @@ public class ProductoSalidaDTO  implements Serializable{
     private  Double precio;
     private List<ImagenSalidaDTO> imagenes = new ArrayList<>();
     private CategoriaDTO categoria;
+    private List<CaracteristicaDTO> caracteristicas;
 }

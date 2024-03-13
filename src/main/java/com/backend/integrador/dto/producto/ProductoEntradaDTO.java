@@ -1,5 +1,8 @@
 package com.backend.integrador.dto.producto;
 
+import java.util.List;
+
+import com.backend.integrador.dto.caracteristicas.CaracteristicaEntradaDTO;
 import com.backend.integrador.dto.categoria.CategoriaEntradaDTO;
 
 import lombok.AllArgsConstructor;
@@ -18,4 +21,5 @@ public class ProductoEntradaDTO {
     private String descripcion;
     private Double precio;
     private CategoriaEntradaDTO categoria; 
+    private List<CaracteristicaEntradaDTO> caracteristicas;
 }

@@ -44,13 +44,13 @@ public class ProductoController {
         
     }
 
-    @GetMapping("/")
+    @GetMapping("/listar")
     public List<ProductoSalidaDTO> obtenerProductoConImagenes(){
         List<ProductoSalidaDTO> listaProductos = productoService.obtenerTodosLosProductos();
         return listaProductos;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<?> obtenerProductoPorId(@PathVariable Long id) {
         ProductoSalidaDTO productoSalidaDTO = productoService.obtenerProductoPorId(id);
         if (productoSalidaDTO != null) {
@@ -69,7 +69,7 @@ public class ProductoController {
         return ResponseEntity.ok().body(productoService.obtenerProductosAleatorios());
     }
 
-    @PostMapping("/prueba")
+    @GetMapping("/prueba")
     public String prueba() {
         return "Todo funcioanndo";
     }

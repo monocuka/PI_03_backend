@@ -6,6 +6,7 @@ import com.backend.integrador.dto.imagen.ImagenSalidaDTO;
 import com.backend.integrador.dto.producto.ProductoDTO;
 import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
+import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
@@ -20,12 +21,13 @@ public class ProductoMapper {
         return objectMapper.convertValue(producto, ProductoDTO.class);
     }
 
-    public static Producto toProducto(ProductoEntradaDTO productoEntradaDTO, Categoria categoria){
+    public static Producto toProducto(ProductoEntradaDTO productoEntradaDTO, Categoria categoria, List<Caracteristica> caracteristicas){
         Producto producto = new Producto();
         producto.setNombre(productoEntradaDTO.getNombre());
         producto.setDescripcion(productoEntradaDTO.getDescripcion());
         producto.setPrecio(productoEntradaDTO.getPrecio());
         producto.setCategoria(categoria);
+        producto.setCaracteristicas(caracteristicas);
         return producto;
     }
 
