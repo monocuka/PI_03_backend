@@ -35,13 +35,27 @@ public class ProductoController {
             ProductoSalidaDTO productoSalidaDTO = productoService.guardarProducto(productoStr, imagen);
             return new ResponseEntity<>(productoSalidaDTO, HttpStatus.CREATED);
         } catch (JsonProcessingException e) {
-            // Si la imagen no se encuentra, devolver un 404 Not Found junto con un JSON
-            ErrorResponseDTO errorResponse = new ErrorResponseDTO("Error al subir la imagen");
+            ErrorResponseDTO errorResponse = new ErrorResponseDTO("Error de Estructura de json");
             return ResponseEntity
                     .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                     .body(errorResponse);
         }
         
+    }
+
+    @PostMapping(value = "/actualizar", consumes = { "multipart/form-data" })
+    public ResponseEntity<?> actualizarProducto(@RequestParam("producto") String productoStr,
+                                                @RequestParam(value = "imagen", required = false) MultipartFile imagen){
+        try {
+            ProductoSalidaDTO productoSalidaDTO = productoService.modificarProducto(productoStr, imagen);
+            return new ResponseEntity<>(productoSalidaDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ErrorResponseDTO errorResponse = new ErrorResponseDTO(e.toString());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(errorResponse);
+        }
     }
 
     @GetMapping("/listar")
@@ -56,7 +70,6 @@ public class ProductoController {
         if (productoSalidaDTO != null) {
             return ResponseEntity.ok().body(productoSalidaDTO);
         } else {
-            // Si la imagen no se encuentra, devolver un 404 Not Found junto con un JSON
             ErrorResponseDTO errorResponse = new ErrorResponseDTO("Id de Producto no encontrado");
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
