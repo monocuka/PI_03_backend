@@ -28,7 +28,7 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
         String fileName = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
         // Ruta del projecto
         // final String pathInicial = System.getProperty("user.dir");
-        final String pathCompleto = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator;
+        final String pathCompleto = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator +fileName;
         // final String pathCompleto = "C:" + File.separator +"Imagenes" + File.separator + fileName;
         Path path = Paths.get(pathCompleto);
         try {
