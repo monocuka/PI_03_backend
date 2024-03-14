@@ -67,7 +67,7 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
     
     public FileInputStream obtenerImagen(String nombre) throws IOException {
         // Ruta de directorio donde se encuentran las imágenes
-        final String directorioImagenes = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\images\\";
+        final String directorioImagenes = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator;
         // String directorioImagenes = "/ruta/a/directorio/de/imagenes/";
 
         // Combinar la ruta del directorio con el nombre de la imagen
