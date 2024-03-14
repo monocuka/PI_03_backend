@@ -28,7 +28,7 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
         String fileName = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
         // Ruta del projecto
         // final String pathInicial = System.getProperty("user.dir");
-        final String pathCompleto = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\images\\"+fileName;
+        final String pathCompleto = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator +fileName;
         // final String pathCompleto = "C:" + File.separator +"Imagenes" + File.separator + fileName;
         Path path = Paths.get(pathCompleto);
         try {
@@ -68,7 +68,7 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
     public FileInputStream obtenerImagen(String nombre) throws IOException {
         // Ruta de directorio donde se encuentran las imágenes
         final String directorioImagenes = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator;
-        // String directorioImagenes = "/ruta/a/directorio/de/imagenes/";
+        
 
         // Combinar la ruta del directorio con el nombre de la imagen
         String rutaImagen = directorioImagenes + nombre;
