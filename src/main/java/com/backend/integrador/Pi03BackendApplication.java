@@ -1,20 +1,25 @@
 package com.backend.integrador;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
+import com.backend.integrador.entity.Rol;
+import com.backend.integrador.entity.Usuario;
 import com.backend.integrador.repository.ICaracteristicasRepository;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.repository.IImagenProductoRepository;
 import com.backend.integrador.repository.IProductoRepository;
+import com.backend.integrador.repository.IUsuarioRepository;
 
 @SpringBootApplication
 public class Pi03BackendApplication implements CommandLineRunner{
@@ -26,6 +31,10 @@ public class Pi03BackendApplication implements CommandLineRunner{
 	private IProductoRepository productoRepository;
 	@Autowired
 	private IImagenProductoRepository imagenProductoRepository;
+	@Autowired
+	private IUsuarioRepository usuarioRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Pi03BackendApplication.class, args);
@@ -122,6 +131,37 @@ public class Pi03BackendApplication implements CommandLineRunner{
 		imagenProductoRepository.save(new ImagenProducto(28L,"localhost:8080/api/imagenes/img10_1.png", productoRepository.findById(10L).orElse(null)));
 		imagenProductoRepository.save(new ImagenProducto(29L,"localhost:8080/api/imagenes/img10_2.jpg", productoRepository.findById(10L).orElse(null)));
 		imagenProductoRepository.save(new ImagenProducto(30L,"localhost:8080/api/imagenes/img10_3.jpg", productoRepository.findById(10L).orElse(null)));
+
+		// Crear usuario ADMIN		
+		List<Rol> roles = new ArrayList<>();
+		Rol rolAdmin = new Rol();
+		rolAdmin.setNombreRol("ROLE_ADMIN");
+		roles.add(rolAdmin);
+		var admin = Usuario.builder()
+				.name("Administrador")
+				.lastName("Admin")
+				.email("admin@admin.com")
+				.password(passwordEncoder.encode("admin"))
+				.roles(roles)
+				.build();
+		
+		usuarioRepository.save(admin);
+
+
+		// Crear usuario ADMIN		
+		List<Rol> rolesUser = new ArrayList<>();
+		Rol rolUser = new Rol();
+		rolUser.setNombreRol("ROLE_USER");
+		rolesUser.add(rolUser);
+		var user = Usuario.builder()
+				.name("Usuario")
+				.lastName("Usuario")
+				.email("usuario@usuario.com")
+				.password(passwordEncoder.encode("usuario"))
+				.roles(rolesUser)
+				.build();
+		
+		usuarioRepository.save(user);
 	}
 
 }
