@@ -18,13 +18,14 @@ import com.backend.integrador.dto.error.ErrorResponseDTO;
 import com.backend.integrador.service.IImagenProductoService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/imagenes")
 public class ImagenesController {
 
     @Autowired
     private IImagenProductoService imagenService;
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{nombre}")
     public ResponseEntity<?> obtenerImagen(@PathVariable String nombre) {
         try {
