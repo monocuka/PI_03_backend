@@ -22,12 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/producto")
 public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping(value = "/guardar", consumes = { "multipart/form-data" })
     public ResponseEntity<?> guardarProducto(@RequestParam("producto") String productoStr, 
                                                 @RequestParam("imagen") MultipartFile imagen) {
@@ -43,6 +44,7 @@ public class ProductoController {
         
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping(value = "/actualizar", consumes = { "multipart/form-data" })
     public ResponseEntity<?> actualizarProducto(@RequestParam("producto") String productoStr,
                                                 @RequestParam(value = "imagen", required = false) MultipartFile imagen){
@@ -58,12 +60,14 @@ public class ProductoController {
         }
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/listar")
     public List<ProductoSalidaDTO> obtenerProductoConImagenes(){
         List<ProductoSalidaDTO> listaProductos = productoService.obtenerTodosLosProductos();
         return listaProductos;
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/id/{id}")
     public ResponseEntity<?> obtenerProductoPorId(@PathVariable Long id) {
         ProductoSalidaDTO productoSalidaDTO = productoService.obtenerProductoPorId(id);
@@ -76,12 +80,13 @@ public class ProductoController {
                     .body(errorResponse);
         }
     }
-    
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/productosRecomendados")
     public ResponseEntity<List<ProductoSalidaDTO>> obtenerProductosRecomendados(){
         return ResponseEntity.ok().body(productoService.obtenerProductosAleatorios());
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/prueba")
     public String prueba() {
         return "Todo funcioanndo";
