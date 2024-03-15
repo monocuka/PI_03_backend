@@ -1,6 +1,7 @@
 package com.backend.integrador.security.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import com.backend.integrador.security.service.AuthService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {

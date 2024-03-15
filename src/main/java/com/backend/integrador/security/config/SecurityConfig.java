@@ -35,7 +35,8 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		//http.csrf(AbstractHttpConfigurer::disable);
 		//http.csrf(csrf->csrf.disable());
-		http.cors( cors -> corsConfigurationSource())
+		// http.cors( cors -> corsConfigurationSource())
+		http
 			.csrf( AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth->auth
 			.requestMatchers(getPublicEndpoints()).permitAll()
@@ -61,17 +62,17 @@ public class SecurityConfig {
 			);
 	}
 
-		@Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-control", "Content-type"));
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+	// 	@Bean
+    // CorsConfigurationSource corsConfigurationSource() {
+    //     final CorsConfiguration configuration = new CorsConfiguration();
+    //     configuration.setAllowedOrigins(List.of("*"));
+    //     configuration.setAllowedMethods(List.of("*"));
+    //     configuration.setAllowCredentials(true);
+    //     configuration.setAllowedHeaders(List.of("Authorization", "Cache-control", "Content-type"));
+    //     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     source.registerCorsConfiguration("/**", configuration);
+    //     return source;
+    // }
 
 }
 
