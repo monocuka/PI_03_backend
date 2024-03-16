@@ -12,13 +12,13 @@ import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
 import com.backend.integrador.service.ICategoriaService;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/categorias")
 public class CategoriaController {
     @Autowired
     private ICategoriaService categoriaService;
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    //@CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/listar")
     public List<CategoriaSalidaDTO> obtenerCategorias(){
         List<CategoriaSalidaDTO> listaCategorias = categoriaService.obtenerTodasLasCategorias();
