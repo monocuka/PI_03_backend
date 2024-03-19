@@ -13,7 +13,6 @@ import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,13 +21,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/producto")
 public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
-    //@CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/buscarProducto/{busqueda}")
+    public List<ProductoSalidaDTO> buscarProductos(@PathVariable String busqueda){
+        System.out.print("Buscador: " + busqueda);
+        return productoService.buscarProductos(busqueda);
+    }
+
     @PostMapping(value = "/guardar", consumes = { "multipart/form-data" })
     public ResponseEntity<?> guardarProducto(@RequestParam("producto") String productoStr, 
                                                 @RequestParam("imagen") MultipartFile imagen) {
@@ -85,6 +88,8 @@ public class ProductoController {
     public ResponseEntity<List<ProductoSalidaDTO>> obtenerProductosRecomendados(){
         return ResponseEntity.ok().body(productoService.obtenerProductosAleatorios());
     }
+
+    
 
     //@CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/prueba")

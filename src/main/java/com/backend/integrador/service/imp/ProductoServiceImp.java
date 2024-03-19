@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -147,6 +148,17 @@ public class ProductoServiceImp implements IProductoService{
     public List<ProductoSalidaDTO> obtenerProductosAleatorios() {
         List<Producto> listaDeProductosAleatorios = productoRepository.obtenerProductosAleatorios();
         return listaDeProductosAleatorios.stream()
+                .map(producto -> {
+                    List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
+                    return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
+                })
+                .toList();
+    }
+
+    @Override
+    public List<ProductoSalidaDTO> buscarProductos(String busqueda){
+        List<Producto> productosBuscados = productoRepository.buscarProductos("%" + busqueda + "%");
+        return productosBuscados.stream()
                 .map(producto -> {
                     List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
                     return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);

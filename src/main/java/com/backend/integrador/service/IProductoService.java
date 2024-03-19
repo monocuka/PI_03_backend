@@ -15,4 +15,5 @@ public interface IProductoService {
     public void eliminarProducto(Long idProducto);
     public ProductoSalidaDTO modificarProducto(String productoStr, MultipartFile imagen)throws Exception;
     public List<ProductoSalidaDTO> obtenerProductosAleatorios();
+    public List<ProductoSalidaDTO> buscarProductos(String busqueda);
 }
