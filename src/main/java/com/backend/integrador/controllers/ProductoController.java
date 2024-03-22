@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.integrador.dto.error.ErrorResponseDTO;
+import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,20 +29,21 @@ public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
+    @GetMapping("/disponibilidad/fechainicial/{fechaInicial}/fechafinal/{fechaFinal}")
+    public ResponseEntity<?> buscarProductoXFechas(
+        @RequestParam(required = false) String busqueda,
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaInicial,
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaFinal) {
 
-    @GetMapping("/buscar/")
-    public List<ProductoSalidaDTO> buscarProductosFechas(@RequestParam("busqueda") String busqueda, 
-    @RequestParam("desde") LocalDate desde, 
-    @RequestParam("hasta") LocalDate hasta){
-        System.out.print("se corrio /buscarConFechas, ----------------------------------------");
+        String valoresObtenidos = "Busqueda: " + busqueda +", Fecha Inicial: " + fechaInicial + ", Fecha Final: " + fechaFinal;
 
-        return productoService.buscarProductosFechas(busqueda, desde, hasta);
+        return ResponseEntity.ok().body(valoresObtenidos);
     }
 
 
-    @GetMapping("/buscarProducto/{busqueda}")
-    public List<ProductoSalidaDTO> buscarProductos(@PathVariable String busqueda){
-        return productoService.buscarProductos(busqueda);
+    @GetMapping("/nombresSimilares/{busqueda}")
+    public List<ProductoSalidaBusquedaSimilar> buscarProductos(@PathVariable String busqueda){
+        return productoService.buscarProductosSimilares(busqueda);
     }
 
     @PostMapping(value = "/guardar", consumes = { "multipart/form-data" })
@@ -58,7 +61,6 @@ public class ProductoController {
         
     }
 
-    //@CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping(value = "/actualizar", consumes = { "multipart/form-data" })
     public ResponseEntity<?> actualizarProducto(@RequestParam("producto") String productoStr,
                                                 @RequestParam(value = "imagen", required = false) MultipartFile imagen){
@@ -74,14 +76,12 @@ public class ProductoController {
         }
     }
 
-    //@CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/listar")
     public List<ProductoSalidaDTO> obtenerProductoConImagenes(){
         List<ProductoSalidaDTO> listaProductos = productoService.obtenerTodosLosProductos();
         return listaProductos;
     }
 
-    //@CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/id/{id}")
     public ResponseEntity<?> obtenerProductoPorId(@PathVariable Long id) {
         ProductoSalidaDTO productoSalidaDTO = productoService.obtenerProductoPorId(id);
@@ -94,15 +94,12 @@ public class ProductoController {
                     .body(errorResponse);
         }
     }
-    //@CrossOrigin(origins = "*", allowedHeaders = "*")
+    
     @GetMapping("/productosRecomendados")
     public ResponseEntity<List<ProductoSalidaDTO>> obtenerProductosRecomendados(){
         return ResponseEntity.ok().body(productoService.obtenerProductosAleatorios());
     }
 
-    
-
-    //@CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/prueba")
     public String prueba() {
         return "Todo funcioanndo";

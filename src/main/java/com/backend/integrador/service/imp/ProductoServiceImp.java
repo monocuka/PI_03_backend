@@ -1,20 +1,20 @@
 package com.backend.integrador.service.imp;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import com.backend.integrador.dto.producto.ProductoDTO;
 import com.backend.integrador.dto.producto.ProductoEntradaDTO;
+import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
 import com.backend.integrador.entity.Caracteristica;
@@ -55,10 +55,11 @@ public class ProductoServiceImp implements IProductoService{
             // Obtengo la categoria
             Categoria categoria = categoriaRepository.findById(productoEntradaDTO.getCategoria().getId()).orElse(null);
             // Obtengo las caracteristicas
-            List<Caracteristica> caracteristicas = productoEntradaDTO.getCaracteristicas()
-                                                                    .stream()
-                                                                    .map( caracteristica -> caracteristicasRepository.findById(caracteristica.getId()).orElse(null) )
-                                                                    .toList();
+            Set<Caracteristica> caracteristicas = productoEntradaDTO.getCaracteristicas()
+                                                        .stream()
+                                                        .map(caracteristica -> caracteristicasRepository.findById(caracteristica.getId()).orElse(null))
+                                                        .filter(Objects::nonNull) 
+                                                        .collect(Collectors.toSet());
             // Se guarda el producto
             Producto productoGuardado = productoRepository.save(ProductoMapper.toProducto(productoEntradaDTO, categoria, caracteristicas));
             ImagenProducto imagenConProducto = imagenProductoServices.guardaImagenProducto(imagen, productoGuardado);
@@ -121,11 +122,11 @@ public class ProductoServiceImp implements IProductoService{
             productoAModificar.setCategoria(categoria);
 
             // obtengo las caracteristicas y modifico el actual
-            List<Caracteristica> caracteristicas = productoDTO.getCaracteristicas()
-                                                                .stream()
-                                                                .map( caracteristica -> caracteristicasRepository.findById(caracteristica.getId()).orElse(null))
-                                                                .filter(Objects::nonNull) // Filtrar valores null
-                                                                .collect(Collectors.toCollection(ArrayList::new));
+            Set<Caracteristica> caracteristicas = productoDTO.getCaracteristicas()
+                                                 .stream()
+                                                 .map(caracteristica -> caracteristicasRepository.findById(caracteristica.getId()).orElse(null))
+                                                 .filter(Objects::nonNull) // Filtrar valores null
+                                                 .collect(Collectors.toSet());
 
             productoAModificar.setCaracteristicas(caracteristicas);
             
@@ -158,27 +159,25 @@ public class ProductoServiceImp implements IProductoService{
                 .toList();
     }
 
+    // Como maximo devuelve 4 productos para no llenar la pagina web
     @Override
-    public List<ProductoSalidaDTO> buscarProductos(String busqueda){
-        List<Producto> productosBuscados = productoRepository.buscarProductos("%" + busqueda + "%");
-        return productosBuscados.stream()
-                .map(producto -> {
-                    List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
-                    return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
-                })
-                .toList();
+    public List<ProductoSalidaBusquedaSimilar> buscarProductosSimilares(String busqueda) {
+        List<Producto> listaDeProductosBuscados = productoRepository.findFirst4ByNombreContainingIgnoreCase(busqueda);
+        return listaDeProductosBuscados.stream()
+                                        .map( producto -> new ProductoSalidaBusquedaSimilar( producto.getId(), producto.getNombre()) )
+                                        .toList();
     }
-    @Override
-    public List<ProductoSalidaDTO> buscarProductosFechas(String busqueda, LocalDate desde, LocalDate hasta){
-        List<Producto> productosValidos = productoRepository.buscarProductosFechas(desde, hasta, busqueda);
 
-        return productosValidos.stream()
-        .map(producto -> {
-            List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
-            return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
-        })
-        .toList();
+    // public List<ProductoSalidaDTO> buscarProductosFechas(String busqueda, LocalDate desde, LocalDate hasta){
+    //     List<Producto> productosValidos = productoRepository.buscarProductosFechas(desde, hasta, busqueda);
 
-    }
+    //     return productosValidos.stream()
+    //     .map(producto -> {
+    //         List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
+    //         return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
+    //     })
+    //     .toList();
+
+    // }
    
 }
