@@ -1,5 +1,6 @@
 package com.backend.integrador.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,4 +43,17 @@ public class Producto {
     @ManyToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL )
     @Column( name = "caracteristicas", nullable =  true)
     private List<Caracteristica> caracteristicas;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval=true)
+    private List<Reserva> reservas;
+
+    public Producto(Long id, String nombre, String descripcion, Double precio, Categoria categoria, List<Caracteristica> caracteristicas) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.categoria = categoria;
+        this.caracteristicas = caracteristicas;
+        this.reservas = new ArrayList<>(); // Initialize reservas as an empty list
+    }
+
 }

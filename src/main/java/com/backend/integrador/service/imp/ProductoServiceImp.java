@@ -1,5 +1,6 @@
 package com.backend.integrador.service.imp;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +44,8 @@ public class ProductoServiceImp implements IProductoService{
     private ICategoriaRepository categoriaRepository;
     @Autowired
     private ICaracteristicasRepository caracteristicasRepository;
+
+    
 
     @Override
     public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
@@ -164,6 +167,18 @@ public class ProductoServiceImp implements IProductoService{
                     return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
                 })
                 .toList();
+    }
+    @Override
+    public List<ProductoSalidaDTO> buscarProductosFechas(String busqueda, LocalDate desde, LocalDate hasta){
+        List<Producto> productosValidos = productoRepository.buscarProductosFechas(desde, hasta, busqueda);
+
+        return productosValidos.stream()
+        .map(producto -> {
+            List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
+            return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
+        })
+        .toList();
+
     }
    
 }

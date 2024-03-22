@@ -1,6 +1,8 @@
 package com.backend.integrador;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,14 @@ import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
+import com.backend.integrador.entity.Reserva;
 import com.backend.integrador.entity.Rol;
 import com.backend.integrador.entity.Usuario;
 import com.backend.integrador.repository.ICaracteristicasRepository;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.repository.IImagenProductoRepository;
 import com.backend.integrador.repository.IProductoRepository;
+import com.backend.integrador.repository.IReservaRepository;
 import com.backend.integrador.repository.IUsuarioRepository;
 
 @SpringBootApplication
@@ -34,7 +38,10 @@ public class Pi03BackendApplication implements CommandLineRunner{
 	@Autowired
 	private IUsuarioRepository usuarioRepository;
 	@Autowired
+	private IReservaRepository reservaRepository;
+	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Pi03BackendApplication.class, args);
@@ -59,11 +66,28 @@ public class Pi03BackendApplication implements CommandLineRunner{
 		caracteristicasRepository.save(new Caracteristica(7L,"Incluye accesorios","fa-regular fa-toolbox"));
 		caracteristicasRepository.save(new Caracteristica(8L,"Mantenimiento incluido","fa-regular fa-screwdriver-wrench"));
 
+		List<Rol> rolesUser = new ArrayList<>();
+		Rol rolUser = new Rol();
+		rolUser.setNombreRol("ROLE_USER");
+		rolesUser.add(rolUser);
+		var user = Usuario.builder()
+				.name("Usuario")
+				.lastName("Usuario")
+				.email("usuario@usuario.com")
+				.password(passwordEncoder.encode("usuario"))
+				.roles(rolesUser)
+				.build();
+		
+		usuarioRepository.save(user);
+
+		
+
 		// Se cargan los productos a la base de datos
 		var idCaracteristicas = List.of(1L, 2L, 3L);
 		List<Caracteristica> caracteristicas = idCaracteristicas.stream().map(numero -> caracteristicasRepository.findById(numero).orElse(null)).toList();
 		productoRepository.save(new Producto(1L,"Apisonador (canguro) Motor HONDA GX120R Gasolina", "Motor Gasolina: Honda GXR120. Potencia: 4 Hp. Masa operacional: 75 Kg", 50.0, categoriaRepository.findById(3L).orElse(null), caracteristicas));
-		
+		reservaRepository.save(new Reserva(1L, LocalDate.of(2024,3,22), LocalDate.of(2024, 3,26), 2,  productoRepository.findById(1L).orElse(null), usuarioRepository.findById(1L).orElse(null)));
+
 		idCaracteristicas = List.of( 2L, 3L);
 		caracteristicas = idCaracteristicas.stream().map(numero -> caracteristicasRepository.findById(numero).orElse(null)).toList();
 		productoRepository.save(new Producto(2L,"Mezcladora de Concreto MASTER 1.5 Bultos (325litros/11ft³)", "MASTER 1.5 Bultos (325litros/11ft³ ) (con diferentes opciones de tipo de Motor). Capacidad litros 325 litros. Capacidad pies 3 11,4. Calibre lamina 3/16″.", 80.0, categoriaRepository.findById(2L).orElse(null), caracteristicas));
@@ -149,19 +173,7 @@ public class Pi03BackendApplication implements CommandLineRunner{
 
 
 		// Crear usuario ADMIN		
-		List<Rol> rolesUser = new ArrayList<>();
-		Rol rolUser = new Rol();
-		rolUser.setNombreRol("ROLE_USER");
-		rolesUser.add(rolUser);
-		var user = Usuario.builder()
-				.name("Usuario")
-				.lastName("Usuario")
-				.email("usuario@usuario.com")
-				.password(passwordEncoder.encode("usuario"))
-				.roles(rolesUser)
-				.build();
 		
-		usuarioRepository.save(user);
 	}
 
 }

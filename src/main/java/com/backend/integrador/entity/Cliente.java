@@ -41,7 +41,7 @@ public class Cliente {
     @Column( name = "cli_cedula")
     private int cedula;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval=true)
-    private Set<Reserva> reservas;
+    // @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval=true)
+    // private Set<Reserva> reservas;
     
 }

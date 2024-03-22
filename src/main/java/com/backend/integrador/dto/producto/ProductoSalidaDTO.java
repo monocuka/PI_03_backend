@@ -6,6 +6,7 @@ import java.util.List;
 import com.backend.integrador.dto.caracteristicas.CaracteristicaDTO;
 import com.backend.integrador.dto.categoria.CategoriaDTO;
 import com.backend.integrador.dto.imagen.ImagenSalidaDTO;
+import com.backend.integrador.entity.Reserva;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +23,5 @@ public class ProductoSalidaDTO{
     private List<ImagenSalidaDTO> imagenes = new ArrayList<>();
     private CategoriaDTO categoria;
     private List<CaracteristicaDTO> caracteristicas;
+    private List<Reserva> reservas;
 }

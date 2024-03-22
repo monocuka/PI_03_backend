@@ -1,5 +1,6 @@
 package com.backend.integrador.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,19 @@ public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
+
+    @GetMapping("/buscar/")
+    public List<ProductoSalidaDTO> buscarProductosFechas(@RequestParam("busqueda") String busqueda, 
+    @RequestParam("desde") LocalDate desde, 
+    @RequestParam("hasta") LocalDate hasta){
+        System.out.print("se corrio /buscarConFechas, ----------------------------------------");
+
+        return productoService.buscarProductosFechas(busqueda, desde, hasta);
+    }
+
+
     @GetMapping("/buscarProducto/{busqueda}")
     public List<ProductoSalidaDTO> buscarProductos(@PathVariable String busqueda){
-        System.out.print("Buscador: " + busqueda);
         return productoService.buscarProductos(busqueda);
     }
 
