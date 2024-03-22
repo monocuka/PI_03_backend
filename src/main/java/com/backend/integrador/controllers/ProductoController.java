@@ -13,7 +13,6 @@ import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +26,7 @@ public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    //@CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping(value = "/guardar", consumes = { "multipart/form-data" })
     public ResponseEntity<?> guardarProducto(@RequestParam("producto") String productoStr, 
                                                 @RequestParam("imagen") MultipartFile imagen) {
@@ -82,7 +81,7 @@ public class ProductoController {
         return ResponseEntity.ok().body(productoService.obtenerProductosAleatorios());
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    //@CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/prueba")
     public String prueba() {
         return "Todo funcioanndo";
