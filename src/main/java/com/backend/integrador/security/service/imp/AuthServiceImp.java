@@ -47,6 +47,7 @@ public class AuthServiceImp implements AuthService{
 		return AuthResponse.builder()
 							.name(usuarioGuardado.getName())
 							.lastName(usuarioGuardado.getLastName())
+							.email(usuarioGuardado.getEmail())
 							.token(jwtToken)
 							.roles(roles)
 							.build();
@@ -63,6 +64,7 @@ public class AuthServiceImp implements AuthService{
 		return AuthResponse.builder()
 							.name(user.getName())
 							.lastName(user.getLastName())
+							.email(user.getEmail())
 						   	.token(jwtToken)
 							.roles(user.getRoles())
 						   	.build();
