@@ -2,7 +2,6 @@ package com.backend.integrador.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.backend.integrador.dto.error.ErrorResponseDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
+import com.backend.integrador.entity.Producto;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -29,6 +29,12 @@ public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
+
+    // @GetMapping("/reserva/")
+    // public List<ReservaSalidaDTO>  listarReservas(){
+    //     return productoService.listarReservas();
+    // }
+
     @GetMapping("/disponibilidad/fechainicial/{fechaInicial}/fechafinal/{fechaFinal}")
     public ResponseEntity<?> buscarProductoXFechas(
         @RequestParam(required = false) String busqueda,
@@ -36,8 +42,16 @@ public class ProductoController {
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaFinal) {
 
         String valoresObtenidos = "Busqueda: " + busqueda +", Fecha Inicial: " + fechaInicial + ", Fecha Final: " + fechaFinal;
+        System.out.print(valoresObtenidos);
+        List<ProductoSalidaBusquedaSimilar> posiblesProductos = productoService.buscarProductosSimilares(busqueda);
+        List<Producto> productosDisponibles = posiblesProductos.stream()
+        .map(producto -> {
+                return productoService.chequearDisponibilidad(producto.getId(), fechaInicial, fechaFinal);
+        })
+        .toList();
+       
 
-        return ResponseEntity.ok().body(valoresObtenidos);
+        return ResponseEntity.ok().body(productosDisponibles);
     }
 
 

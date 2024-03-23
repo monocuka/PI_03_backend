@@ -4,6 +4,8 @@ import com.backend.integrador.entity.ImagenProducto;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
 import com.backend.integrador.entity.Reserva;
@@ -12,9 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class ReservaMapper {
+   
    private static  ObjectMapper objectMapper = new ObjectMapper();
 
-   private static IImagenProductoRepository imagenProductoRepository; 
+   @Autowired
+   private  IImagenProductoRepository imagenProductoRepository; 
    
    public static ReservaSalidaDTO toReservaSalidaDTO(Reserva reserva){
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);

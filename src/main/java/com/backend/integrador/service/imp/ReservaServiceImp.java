@@ -3,12 +3,15 @@ package com.backend.integrador.service.imp;
 import java.util.Optional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
 import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
 import com.backend.integrador.entity.Reserva;
 import com.backend.integrador.repository.IReservaRepository;
 import com.backend.integrador.service.IReservaService;
 
+@Service
 public class ReservaServiceImp implements IReservaService{
     
     @Autowired

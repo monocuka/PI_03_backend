@@ -1,11 +1,14 @@
 package com.backend.integrador.service.imp;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +20,18 @@ import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
+import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
+import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
 import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
+import com.backend.integrador.entity.Reserva;
 import com.backend.integrador.repository.ICaracteristicasRepository;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.repository.IImagenProductoRepository;
 import com.backend.integrador.repository.IProductoRepository;
+import com.backend.integrador.repository.IReservaRepository;
 import com.backend.integrador.service.IImagenProductoService;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,8 +51,35 @@ public class ProductoServiceImp implements IProductoService{
     private ICategoriaRepository categoriaRepository;
     @Autowired
     private ICaracteristicasRepository caracteristicasRepository;
+    @Autowired
+    private IReservaRepository reservaRepository;
 
-    
+    @Override
+    public List<ReservaSalidaDTO> listarReservas(){
+        List<Reserva> reservas =  reservaRepository.findAll();
+        if(reservas.isEmpty()){
+            System.out.println("NO hay reservas");
+            return null;
+        }
+        List<ReservaSalidaDTO> resrevasSalida = reservas.stream()
+        .map(reserva -> {
+            return ReservaMapper.toReservaSalidaDTO(reserva);
+        })
+        .toList();
+        return resrevasSalida;
+    }
+
+    @Override
+    public Producto  chequearDisponibilidad(Long id, LocalDate fechaInicial, LocalDate fechaFinal){
+        // chequeo si el producto contiene reservas con las fechas especificadas.
+        Optional<Producto> producto = reservaRepository.findProductosByReservaAndFecha(id, fechaInicial, fechaFinal); 
+
+        if(!producto.isEmpty()){ // no hay reservas que cumplan las condiciones de fechas -> el producto esta disponible.
+            producto = productoRepository.findById(id); // busco el producto
+            return producto.get(); // lo devuelvo
+        }
+        return null; // si el producto no es nulo entonces tiene reservas que cumplen las condiciones de fechas -> no esta disponible
+    }
 
     @Override
     public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
@@ -167,6 +201,11 @@ public class ProductoServiceImp implements IProductoService{
                                         .map( producto -> new ProductoSalidaBusquedaSimilar( producto.getId(), producto.getNombre()) )
                                         .toList();
     }
+
+    // @Override
+    // public Producto buscarPorNombre(String nombre){
+    //     return productoRepository.findByNombre(nombre);
+    // }
 
     // public List<ProductoSalidaDTO> buscarProductosFechas(String busqueda, LocalDate desde, LocalDate hasta){
     //     List<Producto> productosValidos = productoRepository.buscarProductosFechas(desde, hasta, busqueda);

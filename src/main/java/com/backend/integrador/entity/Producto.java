@@ -3,6 +3,8 @@ package com.backend.integrador.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,6 +50,7 @@ public class Producto {
     private Set<Caracteristica> caracteristicas;
     
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval=true)
+    @JsonManagedReference
     private Set<Reserva> reservas;
 
     public Producto(Long id, String nombre, String descripcion, Double precio, Categoria categoria, Set<Caracteristica> caracteristicas) {

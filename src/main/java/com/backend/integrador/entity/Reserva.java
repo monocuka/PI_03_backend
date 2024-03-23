@@ -2,6 +2,8 @@ package com.backend.integrador.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,6 +39,7 @@ public class Reserva {
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pro_id", nullable = false)
+    @JsonBackReference
     private Producto producto;
 
     @ManyToOne(fetch = FetchType.EAGER)
