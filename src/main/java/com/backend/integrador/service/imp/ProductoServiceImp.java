@@ -56,17 +56,26 @@ public class ProductoServiceImp implements IProductoService{
 
 
     @Override
-    public List<Producto>  productosDisponiblesFechas(LocalDate fechaInicial, LocalDate fechaFinal){
+    public List<ProductoSalidaDTO>  productosDisponiblesFechas(LocalDate fechaInicial, LocalDate fechaFinal){
         // filtro todos los productos por un rango de fechas
         List<Producto> productosDisponibles = reservaRepository.filtrarProductoPorRangoFechas(fechaInicial, fechaFinal); 
-
-        return productosDisponibles; 
+        List<ProductoSalidaDTO> productosDisponiblesDTO = productosDisponibles.stream()
+                                                                              .map(producto -> {
+                                                                                return ProductoMapper.toProductoSalidaDTO(producto, imagenProductoRepository.findByProductoId(producto.getId()));
+                                                                              })
+                                                                              .toList();
+        return productosDisponiblesDTO; 
     }
 
     @Override
-    public List<Producto> productosDisponiblesFechasYNombre(LocalDate fechaInicial, LocalDate fechaFinal, String busqueda){
+    public List<ProductoSalidaDTO> productosDisponiblesFechasYNombre(LocalDate fechaInicial, LocalDate fechaFinal, String busqueda){
         List<Producto> productosDisponibles = reservaRepository.filtrarProductosPorRangoFechasYNombre(fechaInicial, fechaFinal, busqueda);
-        return productosDisponibles;
+        List<ProductoSalidaDTO> productosDisponiblesDTO = productosDisponibles.stream()
+                                                                              .map(producto -> {
+                                                                                return ProductoMapper.toProductoSalidaDTO(producto, imagenProductoRepository.findByProductoId(producto.getId()));
+                                                                              })
+                                                                              .toList();
+        return productosDisponiblesDTO;
     }
 
     @Override

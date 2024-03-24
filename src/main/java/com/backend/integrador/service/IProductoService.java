@@ -23,7 +23,7 @@ public interface IProductoService {
     public List<ProductoSalidaDTO> obtenerProductosAleatorios();
     public List<ProductoSalidaBusquedaSimilar> buscarProductosSimilares(String busqueda);
     //public Producto chequearDisponibilidad(Long id, LocalDate fechaInicial, LocalDate fechaFinal);
-    public List<Producto> productosDisponiblesFechas(LocalDate fechaInicial, LocalDate fechaFinal);
-    public List<Producto> productosDisponiblesFechasYNombre(LocalDate fechaInicial, LocalDate fechaFinal, String busqueda);
+    public List<ProductoSalidaDTO> productosDisponiblesFechas(LocalDate fechaInicial, LocalDate fechaFinal);
+    public List<ProductoSalidaDTO> productosDisponiblesFechasYNombre(LocalDate fechaInicial, LocalDate fechaFinal, String busqueda);
     // public List<ProductoSalidaDTO> buscarProductosFechas(String busqueda, LocalDate desde, LocalDate hasta);
 }

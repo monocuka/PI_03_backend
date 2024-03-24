@@ -41,16 +41,13 @@ public class ProductoController {
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaInicial,
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaFinal) {
 
-        List<Producto> productosDisponibles = null;
+        List<ProductoSalidaDTO> productosDisponibles = null;
         
         if(busqueda == null){
             productosDisponibles = productoService.productosDisponiblesFechas(fechaFinal, fechaFinal);
         } else {
             productosDisponibles = productoService.productosDisponiblesFechasYNombre(fechaInicial, fechaFinal, busqueda);
         }
-        
-       
-       
     
         return ResponseEntity.ok().body(productosDisponibles);
     }
