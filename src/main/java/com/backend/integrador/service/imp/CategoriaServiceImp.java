@@ -1,17 +1,27 @@
 package com.backend.integrador.service.imp;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.backend.integrador.dto.caracteristicas.mapper.CategoriaMapper;
 import com.backend.integrador.dto.categoria.CategoriaEntradaDTO;
 import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
+import com.backend.integrador.dto.categoria.mapper.CategoriaMapper;
+import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.entity.Categoria;
+import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.service.ICategoriaService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Service
@@ -21,9 +31,28 @@ public class CategoriaServiceImp implements ICategoriaService{
     private ICategoriaRepository categoriaRepository;
     
     @Override
-    public CategoriaSalidaDTO guardaCategoria(CategoriaEntradaDTO categoriaEntradaDTO) {
+    public CategoriaSalidaDTO guardaCategoria(String categoriaStr, MultipartFile imagen) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CategoriaEntradaDTO categoriaEntradaDTO = objectMapper.readValue(categoriaStr, CategoriaEntradaDTO.class);
         Categoria categoriaGuardada  = categoriaRepository.save( CategoriaMapper.toCategoria(categoriaEntradaDTO) );
-        return CategoriaMapper.toSalidaDTO(categoriaGuardada);
+        guardarImagenCategoria(imagen, categoriaGuardada);
+        return CategoriaMapper.toCategoriaSalidaDTO(categoriaGuardada, categoriaGuardada.getImagen());
+    }
+
+    private String guardarImagenCategoria(MultipartFile imagen, Categoria categoria){
+        String fileName = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
+        final String pathCompleto = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator + "categoria" + File.separator + fileName;
+        
+        Path path = Paths.get(pathCompleto);
+        try {
+            // Guardar la imagen en una carpeta de archivos
+            Files.write(path, imagen.getBytes());
+            // Creación de la imagen
+            categoria.setImagen("localhost:8080/api/imagenes/"+fileName);
+            return categoria.getImagen();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @Override

@@ -24,4 +24,13 @@ public class Categoria {
     private String nombre;
     @Column( name = "cat_descripcion")
     private String descripcion;
+    @Column(name = "cat_imagen")
+    private String imagen;
+
+    public Categoria(Long id, String nombre, String descripcion){
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = "";
+    }
 }
