@@ -2,6 +2,8 @@ package com.backend.integrador.service;
 
 import java.util.List;
 import java.time.LocalDate;
+
+import org.springframework.cglib.core.Local;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
@@ -20,7 +22,8 @@ public interface IProductoService {
     public ProductoSalidaDTO modificarProducto(String productoStr, MultipartFile imagen)throws Exception;
     public List<ProductoSalidaDTO> obtenerProductosAleatorios();
     public List<ProductoSalidaBusquedaSimilar> buscarProductosSimilares(String busqueda);
-    public Producto chequearDisponibilidad(Long id, LocalDate fechaInicial, LocalDate fechaFinal);
-    public List<ReservaSalidaDTO> listarReservas(); // borrar este metodo esta solo para ver si se cargaron las reservas correctamente
+    //public Producto chequearDisponibilidad(Long id, LocalDate fechaInicial, LocalDate fechaFinal);
+    public List<Producto> productosDisponiblesFechas(LocalDate fechaInicial, LocalDate fechaFinal);
+    public List<Producto> productosDisponiblesFechasYNombre(LocalDate fechaInicial, LocalDate fechaFinal, String busqueda);
     // public List<ProductoSalidaDTO> buscarProductosFechas(String busqueda, LocalDate desde, LocalDate hasta);
 }

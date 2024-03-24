@@ -54,31 +54,19 @@ public class ProductoServiceImp implements IProductoService{
     @Autowired
     private IReservaRepository reservaRepository;
 
+
     @Override
-    public List<ReservaSalidaDTO> listarReservas(){
-        List<Reserva> reservas =  reservaRepository.findAll();
-        if(reservas.isEmpty()){
-            System.out.println("NO hay reservas");
-            return null;
-        }
-        List<ReservaSalidaDTO> resrevasSalida = reservas.stream()
-        .map(reserva -> {
-            return ReservaMapper.toReservaSalidaDTO(reserva);
-        })
-        .toList();
-        return resrevasSalida;
+    public List<Producto>  productosDisponiblesFechas(LocalDate fechaInicial, LocalDate fechaFinal){
+        // filtro todos los productos por un rango de fechas
+        List<Producto> productosDisponibles = reservaRepository.filtrarProductoPorRangoFechas(fechaInicial, fechaFinal); 
+
+        return productosDisponibles; 
     }
 
     @Override
-    public Producto  chequearDisponibilidad(Long id, LocalDate fechaInicial, LocalDate fechaFinal){
-        // chequeo si el producto contiene reservas con las fechas especificadas.
-        Optional<Producto> producto = reservaRepository.findProductosByReservaAndFecha(id, fechaInicial, fechaFinal); 
-
-        if(producto.isEmpty()){ // no hay reservas que cumplan las condiciones de fechas -> el producto esta disponible.
-            producto = productoRepository.findById(id); // busco el producto
-            return producto.get(); // lo devuelvo
-        }
-        return null; // si el producto no es nulo entonces tiene reservas que cumplen las condiciones de fechas -> no esta disponible
+    public List<Producto> productosDisponiblesFechasYNombre(LocalDate fechaInicial, LocalDate fechaFinal, String busqueda){
+        List<Producto> productosDisponibles = reservaRepository.filtrarProductosPorRangoFechasYNombre(fechaInicial, fechaFinal, busqueda);
+        return productosDisponibles;
     }
 
     @Override

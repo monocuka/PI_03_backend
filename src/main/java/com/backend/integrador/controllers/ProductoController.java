@@ -41,14 +41,16 @@ public class ProductoController {
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaInicial,
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaFinal) {
 
-        String valoresObtenidos = "Busqueda: " + busqueda +", Fecha Inicial: " + fechaInicial + ", Fecha Final: " + fechaFinal;
-        System.out.print(valoresObtenidos);
-        List<ProductoSalidaBusquedaSimilar> posiblesProductos = productoService.buscarProductosSimilares(busqueda);
-        List<Producto> productosDisponibles = posiblesProductos.stream()
-        .map(producto -> {
-                return productoService.chequearDisponibilidad(producto.getId(), fechaInicial, fechaFinal);
-        })
-        .toList();
+        List<Producto> productosDisponibles = null;
+        
+        if(busqueda == null){
+            productosDisponibles = productoService.productosDisponiblesFechas(fechaFinal, fechaFinal);
+        } else {
+            productosDisponibles = productoService.productosDisponiblesFechasYNombre(fechaInicial, fechaFinal, busqueda);
+        }
+        
+       
+       
     
         return ResponseEntity.ok().body(productosDisponibles);
     }
