@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservaSalidaDTO {
-    private Long id;
     private LocalDate fecha_desde;
     private LocalDate fecha_hasta;
-    private int cantidad;
     private ProductoSalidaDTO producto;
 }

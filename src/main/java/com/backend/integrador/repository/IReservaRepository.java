@@ -17,7 +17,28 @@ import java.util.Optional;
 @Repository
 public interface IReservaRepository extends JpaRepository<Reserva, Long> {
 
-    /*
+    @Query("SELECT p FROM Reserva r RIGHT JOIN r.producto p WHERE " +
+            "(r.id IS NULL OR " +
+            "( (:fechaInicio NOT BETWEEN r.fecha_desde AND r.fecha_hasta) AND " +
+            "(:fechaFin NOT BETWEEN r.fecha_desde AND r.fecha_hasta) ) AND " +
+            "NOT (:fechaInicio < r.fecha_desde AND :fechaFin > r.fecha_hasta))")
+    List<Producto> filtrarProductoPorRangoFechas(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
+
+    @Query("SELECT p FROM Reserva r RIGHT JOIN r.producto p WHERE " +
+           "(r.id IS NULL OR " +
+           "( (:fechaInicio NOT BETWEEN r.fecha_desde AND r.fecha_hasta) AND " +
+           "(:fechaFin NOT BETWEEN r.fecha_desde AND r.fecha_hasta) ) AND " +
+           "NOT (:fechaInicio < r.fecha_desde AND :fechaFin > r.fecha_hasta)) AND " +
+           "LOWER(p.nombre) LIKE LOWER(CONCAT('%', :busqueda, '%'))")
+    List<Producto> filtrarProductosPorRangoFechasYNombre(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin, @Param("busqueda") String busqueda);
+
+    List<Reserva> findByProductoId(Long productoId);
+}
+
+
+
+
+ /*
     #query para traer prod reservados
     SELECT * FROM reservas AS R
     INNER JOIN productos AS P
@@ -44,21 +65,3 @@ public interface IReservaRepository extends JpaRepository<Reserva, Long> {
             (03-26,03-31)  -> no lo trae - ok
             (03-27,03-31)  -> lo trae -ok
     */
-    @Query("SELECT p FROM Producto p WHERE p.id = :productoId AND NOT EXISTS (SELECT r FROM Reserva r WHERE r.producto.id = p.id AND (r.fecha_desde <= :fechaFin AND r.fecha_hasta >= :fechaInicio))")
-    Optional<Producto> findProductosByReservaAndFecha(@Param("productoId") Long productoId, @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
-
-    @Query("SELECT p FROM Reserva r RIGHT JOIN r.producto p WHERE " +
-            "(r.id IS NULL OR " +
-            "( (:fechaInicio NOT BETWEEN r.fecha_desde AND r.fecha_hasta) AND " +
-            "(:fechaFin NOT BETWEEN r.fecha_desde AND r.fecha_hasta) ) AND " +
-            "NOT (:fechaInicio < r.fecha_desde AND :fechaFin > r.fecha_hasta))")
-    List<Producto> filtrarProductoPorRangoFechas(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
-
-    @Query("SELECT p FROM Reserva r RIGHT JOIN r.producto p WHERE " +
-           "(r.id IS NULL OR " +
-           "( (:fechaInicio NOT BETWEEN r.fecha_desde AND r.fecha_hasta) AND " +
-           "(:fechaFin NOT BETWEEN r.fecha_desde AND r.fecha_hasta) ) AND " +
-           "NOT (:fechaInicio < r.fecha_desde AND :fechaFin > r.fecha_hasta)) AND " +
-           "LOWER(p.nombre) LIKE LOWER(CONCAT('%', :busqueda, '%'))")
-    List<Producto> filtrarProductosPorRangoFechasYNombre(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin, @Param("busqueda") String busqueda);
-}

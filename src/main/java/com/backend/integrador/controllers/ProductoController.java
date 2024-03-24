@@ -48,8 +48,12 @@ public class ProductoController {
         } else {
             productosDisponibles = productoService.productosDisponiblesFechasYNombre(fechaInicial, fechaFinal, busqueda);
         }
-    
-        return ResponseEntity.ok().body(productosDisponibles);
+
+        if (productosDisponibles == null || productosDisponibles.isEmpty()) {
+            return new ResponseEntity<>("No hay productos buscados.", HttpStatus.NOT_FOUND);
+        } else {
+            return ResponseEntity.ok().body(productosDisponibles);
+        }
     }
 
 

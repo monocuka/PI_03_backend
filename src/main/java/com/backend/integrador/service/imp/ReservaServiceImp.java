@@ -21,6 +21,19 @@ public class ReservaServiceImp implements IReservaService{
     @Autowired
     private IImagenProductoRepository imagenProductoRepository;
 
+
+    @Override
+    public List<ReservaSalidaDTO> buscarPorProductoId(Long id){
+        List<Reserva> reservas = reservaRepository.findByProductoId(id);
+        List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(id);
+        List<ReservaSalidaDTO> reservasSalidaDTO = reservas.stream()
+        .map(reserva -> {
+            return ReservaMapper.toReservaSalidaDTO(reserva, imagenesDelProducto);
+        })
+        .toList();
+        return reservasSalidaDTO;
+    }
+
     @Override
     public ReservaSalidaDTO guardarReserva(Reserva reserva){
         List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(reserva.getProducto().getId());

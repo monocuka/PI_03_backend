@@ -23,10 +23,8 @@ public class ReservaMapper {
 
         ReservaSalidaDTO reservaSalida = new ReservaSalidaDTO();
 
-        reservaSalida.setId(reserva.getId());
         reservaSalida.setFecha_desde(reserva.getFecha_desde());
         reservaSalida.setFecha_hasta(reserva.getFecha_hasta());
-        reservaSalida.setCantidad(reserva.getCantidad());
         reservaSalida.setProducto(ProductoMapper.toProductoSalidaDTO(reserva.getProducto(), imagenes));
 
 
