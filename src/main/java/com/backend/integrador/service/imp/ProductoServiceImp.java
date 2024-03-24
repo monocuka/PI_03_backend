@@ -56,6 +56,17 @@ public class ProductoServiceImp implements IProductoService{
 
 
     @Override
+    public List<ProductoSalidaDTO> buscarPorCategoria(Long id){
+        List<Producto> productosCategoria = productoRepository.findByCategoriaId(id);
+        List<ProductoSalidaDTO> productosCategoriaSalida = productosCategoria.stream()
+        .map(producto -> {
+            return ProductoMapper.toProductoSalidaDTO(producto, imagenProductoRepository.findByProductoId(id));
+        })
+        .toList();
+        return productosCategoriaSalida;
+    }
+
+    @Override
     public List<ProductoSalidaDTO>  productosDisponiblesFechas(LocalDate fechaInicial, LocalDate fechaFinal){
         // filtro todos los productos por un rango de fechas
         List<Producto> productosDisponibles = reservaRepository.filtrarProductoPorRangoFechas(fechaInicial, fechaFinal); 

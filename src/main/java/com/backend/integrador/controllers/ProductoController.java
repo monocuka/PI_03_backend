@@ -30,10 +30,14 @@ public class ProductoController {
     private IProductoService productoService;
 
 
-    // @GetMapping("/reserva/")
-    // public List<ReservaSalidaDTO>  listarReservas(){
-    //     return productoService.listarReservas();
-    // }
+    @GetMapping("/categoria/{id}")
+    public ResponseEntity<?> buscarPorCategoria(@PathVariable Long id){
+        List<ProductoSalidaDTO> productosCategoria = productoService.buscarPorCategoria(id);
+        if(productosCategoria == null || productosCategoria.isEmpty()){
+            return new ResponseEntity<>("No hay productos con esa categoria.", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().body(productosCategoria);
+    }
 
     @GetMapping("/disponibilidad/fechainicial/{fechaInicial}/fechafinal/{fechaFinal}")
     public ResponseEntity<?> buscarProductoXFechas(

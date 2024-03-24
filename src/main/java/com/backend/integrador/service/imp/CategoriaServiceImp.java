@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.backend.integrador.dto.caracteristicas.mapper.CategoriaMapper;
 import com.backend.integrador.dto.categoria.CategoriaEntradaDTO;
 import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
+import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.service.ICategoriaService;
