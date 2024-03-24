@@ -15,6 +15,12 @@ import java.util.Optional;
 public interface IReservaRepository extends JpaRepository<Reserva, Long> {
 
     /*
+    #query para traer prod reservados
+    SELECT * FROM reservas AS R
+    INNER JOIN productos AS P
+    ON R.pro_id = P.pro_id;
+
+    // fecha de inicio y fecha de fin son los unicos params que necesito
     SELECT * FROM reservas AS R
     RIGHT JOIN productos AS P
     ON R.pro_id = P.pro_id
