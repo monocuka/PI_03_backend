@@ -17,15 +17,11 @@ public class ReservaMapper {
    
    private static  ObjectMapper objectMapper = new ObjectMapper();
 
-   @Autowired
-   private  static IImagenProductoRepository imagenProductoRepository; 
    
-   public static ReservaSalidaDTO toReservaSalidaDTO(Reserva reserva){
+   public static ReservaSalidaDTO toReservaSalidaDTO(Reserva reserva, List<ImagenProducto> imagenes){
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
         ReservaSalidaDTO reservaSalida = new ReservaSalidaDTO();
-
-        List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(reserva.getProducto().getId());
 
         reservaSalida.setId(reserva.getId());
         reservaSalida.setFecha_desde(reserva.getFecha_desde());

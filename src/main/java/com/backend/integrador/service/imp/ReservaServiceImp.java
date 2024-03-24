@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
 import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
+import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Reserva;
+import com.backend.integrador.repository.IImagenProductoRepository;
 import com.backend.integrador.repository.IReservaRepository;
 import com.backend.integrador.service.IReservaService;
 
@@ -16,10 +18,13 @@ public class ReservaServiceImp implements IReservaService{
     
     @Autowired
     private IReservaRepository reservaRepository;
+    @Autowired
+    private IImagenProductoRepository imagenProductoRepository;
 
     @Override
     public ReservaSalidaDTO guardarReserva(Reserva reserva){
-        ReservaSalidaDTO reservaSalidaDTO = ReservaMapper.toReservaSalidaDTO(reserva);
+        List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(reserva.getProducto().getId());
+        ReservaSalidaDTO reservaSalidaDTO = ReservaMapper.toReservaSalidaDTO(reserva, imagenes);
         reservaRepository.save(reserva);
         return reservaSalidaDTO;
     }
@@ -27,8 +32,9 @@ public class ReservaServiceImp implements IReservaService{
     @Override
     public ReservaSalidaDTO obtenerReservaPorId(Long id){
         Optional<Reserva> reservaOptional = reservaRepository.findById(id);
+        List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(reservaOptional.get().getProducto().getId());
         if (reservaOptional.isPresent()) {
-            return ReservaMapper.toReservaSalidaDTO(reservaOptional.get());
+            return ReservaMapper.toReservaSalidaDTO(reservaOptional.get(), imagenes);
         } else {
             throw new IllegalArgumentException("Reserva with id " + id + " not found");
         }
@@ -39,7 +45,7 @@ public class ReservaServiceImp implements IReservaService{
         List<Reserva> reservas = reservaRepository.findAll();
         List<ReservaSalidaDTO> reservasSalida = reservas.stream()
                                                 .map(reserva -> {
-                                                    return ReservaMapper.toReservaSalidaDTO(reserva);
+                                                    return ReservaMapper.toReservaSalidaDTO(reserva, imagenProductoRepository.findByProductoId(reserva.getId()));
                                                 })
                                                 .toList();
         return reservasSalida;
