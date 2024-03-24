@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface IReservaRepository extends JpaRepository<Reserva, Long> {
     
-    @Query("SELECT p FROM Producto p WHERE p.id = :productoId AND NOT EXISTS (SELECT r FROM Reserva r WHERE r.producto.id = p.id AND r.fecha_desde < :fechaFin AND r.fecha_hasta > :fechaInicio)")
+    @Query("SELECT p FROM Producto p WHERE p.id = :productoId AND NOT EXISTS (SELECT r FROM Reserva r WHERE r.producto.id = p.id AND (r.fechaDesde <= :fechaFin AND r.fechaHasta >= :fechaInicio))")
     Optional<Producto> findProductosByReservaAndFecha(@Param("productoId") Long productoId, @Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
-
 }

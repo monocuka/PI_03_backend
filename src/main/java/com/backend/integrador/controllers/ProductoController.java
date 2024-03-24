@@ -49,8 +49,7 @@ public class ProductoController {
                 return productoService.chequearDisponibilidad(producto.getId(), fechaInicial, fechaFinal);
         })
         .toList();
-       
-
+    
         return ResponseEntity.ok().body(productosDisponibles);
     }
 

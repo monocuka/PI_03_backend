@@ -74,7 +74,7 @@ public class ProductoServiceImp implements IProductoService{
         // chequeo si el producto contiene reservas con las fechas especificadas.
         Optional<Producto> producto = reservaRepository.findProductosByReservaAndFecha(id, fechaInicial, fechaFinal); 
 
-        if(!producto.isEmpty()){ // no hay reservas que cumplan las condiciones de fechas -> el producto esta disponible.
+        if(producto.isEmpty()){ // no hay reservas que cumplan las condiciones de fechas -> el producto esta disponible.
             producto = productoRepository.findById(id); // busco el producto
             return producto.get(); // lo devuelvo
         }

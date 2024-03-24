@@ -18,7 +18,7 @@ public class ReservaMapper {
    private static  ObjectMapper objectMapper = new ObjectMapper();
 
    @Autowired
-   private  IImagenProductoRepository imagenProductoRepository; 
+   private  static IImagenProductoRepository imagenProductoRepository; 
    
    public static ReservaSalidaDTO toReservaSalidaDTO(Reserva reserva){
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
