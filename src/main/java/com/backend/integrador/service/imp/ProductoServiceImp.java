@@ -167,17 +167,5 @@ public class ProductoServiceImp implements IProductoService{
                                         .map( producto -> new ProductoSalidaBusquedaSimilar( producto.getId(), producto.getNombre()) )
                                         .toList();
     }
-
-    // public List<ProductoSalidaDTO> buscarProductosFechas(String busqueda, LocalDate desde, LocalDate hasta){
-    //     List<Producto> productosValidos = productoRepository.buscarProductosFechas(desde, hasta, busqueda);
-
-    //     return productosValidos.stream()
-    //     .map(producto -> {
-    //         List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(producto.getId());
-    //         return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
-    //     })
-    //     .toList();
-
-    // }
    
 }

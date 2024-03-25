@@ -40,7 +40,6 @@ public class ProductoController {
         return ResponseEntity.ok().body(valoresObtenidos);
     }
 
-
     @GetMapping("/nombresSimilares/{busqueda}")
     public List<ProductoSalidaBusquedaSimilar> buscarProductos(@PathVariable String busqueda){
         return productoService.buscarProductosSimilares(busqueda);
