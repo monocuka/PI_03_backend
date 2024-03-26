@@ -1,4 +1,4 @@
-package com.backend.integrador.dto.caracteristicas.mapper;
+package com.backend.integrador.dto.categoria.mapper;
 
 import com.backend.integrador.dto.categoria.CategoriaEntradaDTO;
 import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
@@ -16,4 +16,15 @@ public class CategoriaMapper {
     public static Categoria toCategoria(CategoriaEntradaDTO categoriaEntradaDTO){
         return   objectMapper.convertValue(categoriaEntradaDTO, Categoria.class);
     }
+
+    // public static CategoriaSalidaDTO toCategoriaSalidaDTO(Categoria categoria, String imagen ){
+    //     CategoriaSalidaDTO categoriaSalidaDTO = new CategoriaSalidaDTO();
+
+    //     categoriaSalidaDTO.setId(categoria.getId());
+    //     categoriaSalidaDTO.setNombre(categoria.getNombre());
+    //     categoriaSalidaDTO.setDescripcion(categoria.getDescripcion());
+    //     categoriaSalidaDTO.setUrlImagen(imagen);
+
+    //     return categoriaSalidaDTO;
+    // }
 }

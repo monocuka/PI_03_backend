@@ -8,24 +8,20 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.backend.integrador.dto.error.ErrorResponseDTO;
 import com.backend.integrador.service.IImagenProductoService;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/imagenes")
 public class ImagenesController {
 
     @Autowired
     private IImagenProductoService imagenService;
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{nombre}")
     public ResponseEntity<?> obtenerImagen(@PathVariable String nombre) {
         try {

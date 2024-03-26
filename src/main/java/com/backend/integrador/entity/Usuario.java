@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,6 +50,8 @@ public class Usuario implements UserDetails{
 				joinColumns = {@JoinColumn(name="usuarios_usu_id")},
 				inverseJoinColumns = {@JoinColumn(name="roles_rol_id")})
 	private List<Rol> roles;
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval=true)
+	private List<Reserva> reservas;
 	
 	
 	@Override

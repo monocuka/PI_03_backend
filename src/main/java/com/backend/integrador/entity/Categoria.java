@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.Id;
 
 @Entity
-@Table( name = "categoria")
+@Table( name = "categorias")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,4 +24,13 @@ public class Categoria {
     private String nombre;
     @Column( name = "cat_descripcion")
     private String descripcion;
+    @Column(name = "cat_imagen")
+    private String urlImagen;
+
+    public Categoria(Long id, String nombre, String descripcion){
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.urlImagen = "";
+    }
 }
