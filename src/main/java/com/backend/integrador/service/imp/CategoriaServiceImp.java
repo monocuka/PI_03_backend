@@ -73,7 +73,7 @@ public class CategoriaServiceImp implements ICategoriaService{
             Files.write(path, imagen.getBytes());
             // Creación de la imagen
            
-            return "localhost:8080/api/categoria/imagen/"+fileName;
+            return "http://localhost:8080/api/categoria/imagen/"+fileName;
         } catch (IOException e) {
             return "Fallo la creacion de la imagen";
         }
