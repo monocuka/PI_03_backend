@@ -1,6 +1,7 @@
 package com.backend.integrador.dto.producto.mapper;
 
 import java.util.List;
+import java.util.Set;
 
 import com.backend.integrador.dto.caracteristicas.CaracteristicaDTO;
 import com.backend.integrador.dto.categoria.CategoriaDTO;
@@ -24,7 +25,7 @@ public class ProductoMapper {
         return objectMapper.convertValue(producto, ProductoDTO.class);
     }
 
-    public static Producto toProducto(ProductoEntradaDTO productoEntradaDTO, Categoria categoria, List<Caracteristica> caracteristicas){
+    public static Producto toProducto(ProductoEntradaDTO productoEntradaDTO, Categoria categoria, Set<Caracteristica> caracteristicas){
         Producto producto = new Producto();
         producto.setNombre(productoEntradaDTO.getNombre());
         producto.setDescripcion(productoEntradaDTO.getDescripcion());

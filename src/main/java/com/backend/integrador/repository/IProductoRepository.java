@@ -10,6 +10,9 @@ import com.backend.integrador.entity.Producto;
 
 @Repository
 public interface IProductoRepository extends JpaRepository<Producto, Long>{
-    @Query(value = "SELECT * FROM producto ORDER BY RAND() LIMIT 2", nativeQuery = true)
+    @Query(value = "SELECT * FROM productos ORDER BY RAND() LIMIT 2", nativeQuery = true)
     List<Producto> obtenerProductosAleatorios();
+
+    List<Producto> findFirst4ByNombreContainingIgnoreCase(String query);
+
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.integrador.dto.producto.ProductoDTO;
 import com.backend.integrador.dto.producto.ProductoEntradaDTO;
+import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
 import com.backend.integrador.entity.Caracteristica;
@@ -43,6 +45,8 @@ public class ProductoServiceImp implements IProductoService{
     @Autowired
     private ICaracteristicasRepository caracteristicasRepository;
 
+    
+
     @Override
     public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
         try {
@@ -51,10 +55,11 @@ public class ProductoServiceImp implements IProductoService{
             // Obtengo la categoria
             Categoria categoria = categoriaRepository.findById(productoEntradaDTO.getCategoria().getId()).orElse(null);
             // Obtengo las caracteristicas
-            List<Caracteristica> caracteristicas = productoEntradaDTO.getCaracteristicas()
-                                                                    .stream()
-                                                                    .map( caracteristica -> caracteristicasRepository.findById(caracteristica.getId()).orElse(null) )
-                                                                    .toList();
+            Set<Caracteristica> caracteristicas = productoEntradaDTO.getCaracteristicas()
+                                                        .stream()
+                                                        .map(caracteristica -> caracteristicasRepository.findById(caracteristica.getId()).orElse(null))
+                                                        .filter(Objects::nonNull) 
+                                                        .collect(Collectors.toSet());
             // Se guarda el producto
             Producto productoGuardado = productoRepository.save(ProductoMapper.toProducto(productoEntradaDTO, categoria, caracteristicas));
             ImagenProducto imagenConProducto = imagenProductoServices.guardaImagenProducto(imagen, productoGuardado);
@@ -117,11 +122,11 @@ public class ProductoServiceImp implements IProductoService{
             productoAModificar.setCategoria(categoria);
 
             // obtengo las caracteristicas y modifico el actual
-            List<Caracteristica> caracteristicas = productoDTO.getCaracteristicas()
-                                                                .stream()
-                                                                .map( caracteristica -> caracteristicasRepository.findById(caracteristica.getId()).orElse(null))
-                                                                .filter(Objects::nonNull) // Filtrar valores null
-                                                                .collect(Collectors.toCollection(ArrayList::new));
+            Set<Caracteristica> caracteristicas = productoDTO.getCaracteristicas()
+                                                 .stream()
+                                                 .map(caracteristica -> caracteristicasRepository.findById(caracteristica.getId()).orElse(null))
+                                                 .filter(Objects::nonNull) // Filtrar valores null
+                                                 .collect(Collectors.toSet());
 
             productoAModificar.setCaracteristicas(caracteristicas);
             
@@ -152,6 +157,15 @@ public class ProductoServiceImp implements IProductoService{
                     return ProductoMapper.toProductoSalidaDTO(producto, imagenesDelProducto);
                 })
                 .toList();
+    }
+
+    // Como maximo devuelve 4 productos para no llenar la pagina web
+    @Override
+    public List<ProductoSalidaBusquedaSimilar> buscarProductosSimilares(String busqueda) {
+        List<Producto> listaDeProductosBuscados = productoRepository.findFirst4ByNombreContainingIgnoreCase(busqueda);
+        return listaDeProductosBuscados.stream()
+                                        .map( producto -> new ProductoSalidaBusquedaSimilar( producto.getId(), producto.getNombre()) )
+                                        .toList();
     }
    
 }
