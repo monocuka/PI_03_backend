@@ -51,6 +51,21 @@ public class CategoriaController {
 
     }
 
+    @PostMapping(value  = "/actualizar", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> actualizarProducto(@RequestParam("categoria") String productoStr,
+                                                @RequestParam(value = "imagen", required = false) MultipartFile imagen){
+        try {
+            CategoriaSalidaDTO categoriaSalidaDTO = categoriaService.modificarCategoria(productoStr, imagen);
+            return new ResponseEntity<>(categoriaSalidaDTO, HttpStatus.OK);
+        }catch (Exception e) {
+            e.printStackTrace();
+            ErrorResponseDTO errorResponse = new ErrorResponseDTO(e.toString());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(errorResponse);
+        }
+    } 
+
     @GetMapping("/imagen/{nombre}")
     public ResponseEntity<?> obtenerImagenCategoria(@PathVariable String nombre){
         try{

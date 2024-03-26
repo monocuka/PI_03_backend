@@ -16,5 +16,6 @@ public interface ICategoriaService {
     public List<CategoriaSalidaDTO> obtenerTodasLasCategorias();
     public void eliminarCategoria(Long idCategoria);
     public FileInputStream obtenerImagen(String nombre) throws IOException;
+    public CategoriaSalidaDTO modificarCategoria(String categoriaStr, MultipartFile imagen)throws Exception;
 }
 

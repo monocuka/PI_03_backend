@@ -15,10 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.backend.integrador.dto.categoria.CategoriaEntradaDTO;
 import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
 import com.backend.integrador.dto.categoria.mapper.CategoriaMapper;
-import com.backend.integrador.dto.producto.ProductoEntradaDTO;
-import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.entity.Categoria;
-import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.service.ICategoriaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,6 +28,30 @@ public class CategoriaServiceImp implements ICategoriaService{
     @Autowired
     private ICategoriaRepository categoriaRepository;
     
+
+    @Override
+    public CategoriaSalidaDTO modificarCategoria(String categoriaStr, MultipartFile imagen) throws Exception{
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            System.out.println(categoriaStr);
+            CategoriaEntradaDTO categoriaEntradaDTO = objectMapper.readValue(categoriaStr, CategoriaEntradaDTO.class);
+            Categoria categoriaPorActualizar = categoriaRepository.findById(categoriaEntradaDTO.getId()).orElse(null);
+
+            if(categoriaPorActualizar == null){
+                throw new Exception ("El producto no existe");
+            }
+            categoriaPorActualizar.setDescripcion(categoriaEntradaDTO.getDescripcion());
+            categoriaPorActualizar.setUrlImagen(guardarImagenCategoria(imagen));
+            categoriaPorActualizar.setNombre(categoriaEntradaDTO.getNombre());
+            categoriaRepository.save(categoriaPorActualizar);
+            
+            return CategoriaMapper.toSalidaDTO(categoriaPorActualizar);
+        }catch (JsonProcessingException e) {
+            e.printStackTrace();
+            throw new Exception ("Error en estructura del Json");
+        }
+    }
+
     @Override
     public CategoriaSalidaDTO guardaCategoria(String categoriaStr, MultipartFile imagen) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
