@@ -6,25 +6,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
+import com.backend.integrador.entity.*;
+import com.backend.integrador.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.backend.integrador.entity.Caracteristica;
-import com.backend.integrador.entity.Categoria;
-import com.backend.integrador.entity.ImagenProducto;
-import com.backend.integrador.entity.Producto;
-import com.backend.integrador.entity.Reserva;
-import com.backend.integrador.entity.Rol;
-import com.backend.integrador.entity.Usuario;
-import com.backend.integrador.repository.ICaracteristicasRepository;
-import com.backend.integrador.repository.ICategoriaRepository;
-import com.backend.integrador.repository.IImagenProductoRepository;
-import com.backend.integrador.repository.IProductoRepository;
-import com.backend.integrador.repository.IReservaRepository;
-import com.backend.integrador.repository.IUsuarioRepository;
 
 @SpringBootApplication
 public class Pi03BackendApplication implements CommandLineRunner{
@@ -40,6 +28,9 @@ public class Pi03BackendApplication implements CommandLineRunner{
 	private IUsuarioRepository usuarioRepository;
 	@Autowired
 	private IReservaRepository reservaRepository;
+
+	@Autowired
+	private IFavoritoRepository favoritoRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
@@ -174,7 +165,13 @@ public class Pi03BackendApplication implements CommandLineRunner{
 
 
 		// Crear usuario ADMIN		
-		
+
+
+
+		// crear un producto en fav
+		favoritoRepository.save(new Favorito(1L, usuarioRepository.findById(1L).orElse(null), productoRepository.findById(1L).orElse(null)));
+
+
 	}
 
 }
