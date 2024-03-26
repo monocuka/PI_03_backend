@@ -17,14 +17,14 @@ public class CategoriaMapper {
         return   objectMapper.convertValue(categoriaEntradaDTO, Categoria.class);
     }
 
-    public static CategoriaSalidaDTO toCategoriaSalidaDTO(Categoria categoria, String imagen ){
-        CategoriaSalidaDTO categoriaSalidaDTO = new CategoriaSalidaDTO();
+    // public static CategoriaSalidaDTO toCategoriaSalidaDTO(Categoria categoria, String imagen ){
+    //     CategoriaSalidaDTO categoriaSalidaDTO = new CategoriaSalidaDTO();
 
-        categoriaSalidaDTO.setId(categoria.getId());
-        categoriaSalidaDTO.setNombre(categoria.getNombre());
-        categoriaSalidaDTO.setDescripcion(categoria.getDescripcion());
-        categoriaSalidaDTO.setUrlImagen(imagen);
+    //     categoriaSalidaDTO.setId(categoria.getId());
+    //     categoriaSalidaDTO.setNombre(categoria.getNombre());
+    //     categoriaSalidaDTO.setDescripcion(categoria.getDescripcion());
+    //     categoriaSalidaDTO.setUrlImagen(imagen);
 
-        return categoriaSalidaDTO;
-    }
+    //     return categoriaSalidaDTO;
+    // }
 }

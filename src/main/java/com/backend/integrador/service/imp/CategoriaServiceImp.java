@@ -1,6 +1,7 @@
 package com.backend.integrador.service.imp;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,12 +35,14 @@ public class CategoriaServiceImp implements ICategoriaService{
     public CategoriaSalidaDTO guardaCategoria(String categoriaStr, MultipartFile imagen) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         CategoriaEntradaDTO categoriaEntradaDTO = objectMapper.readValue(categoriaStr, CategoriaEntradaDTO.class);
-        Categoria categoriaGuardada  = categoriaRepository.save( CategoriaMapper.toCategoria(categoriaEntradaDTO) );
-        guardarImagenCategoria(imagen, categoriaGuardada);
-        return CategoriaMapper.toCategoriaSalidaDTO(categoriaGuardada, categoriaGuardada.getImagen());
+        Categoria categoriaPorGuardar = CategoriaMapper.toCategoria(categoriaEntradaDTO);
+        categoriaPorGuardar.setUrlImagen(guardarImagenCategoria(imagen));
+        Categoria categoriaGuardada  = categoriaRepository.save(categoriaPorGuardar );
+       
+        return CategoriaMapper.toSalidaDTO(categoriaGuardada);
     }
 
-    private String guardarImagenCategoria(MultipartFile imagen, Categoria categoria){
+    private String guardarImagenCategoria(MultipartFile imagen){
         String fileName = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
         final String pathCompleto = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator + "categoria" + File.separator + fileName;
         
@@ -48,11 +51,24 @@ public class CategoriaServiceImp implements ICategoriaService{
             // Guardar la imagen en una carpeta de archivos
             Files.write(path, imagen.getBytes());
             // Creación de la imagen
-            categoria.setImagen("localhost:8080/api/imagenes/"+fileName);
-            return categoria.getImagen();
+           
+            return "localhost:8080/api/categoria/imagen/"+fileName;
         } catch (IOException e) {
-            return null;
+            return "Fallo la creacion de la imagen";
         }
+    }
+    @Override
+    public FileInputStream obtenerImagen(String nombre) throws IOException{
+        final String directorioImagenes = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "images" + File.separator + "categoria" + File.separator;
+        
+        String rutaImagen = directorioImagenes + nombre;
+
+        File imagen =  new File(rutaImagen);
+
+        if (!imagen.exists()) {
+            throw new IOException("La imagen no existe");
+        }
+        return new FileInputStream(imagen);
     }
 
     @Override

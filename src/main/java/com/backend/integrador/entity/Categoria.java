@@ -25,12 +25,12 @@ public class Categoria {
     @Column( name = "cat_descripcion")
     private String descripcion;
     @Column(name = "cat_imagen")
-    private String imagen;
+    private String urlImagen;
 
     public Categoria(Long id, String nombre, String descripcion){
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.imagen = "";
+        this.urlImagen = "";
     }
 }
