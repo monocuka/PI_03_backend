@@ -1,11 +1,14 @@
 package com.backend.integrador.service.imp;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +20,18 @@ import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
+import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
+import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
 import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
+import com.backend.integrador.entity.Reserva;
 import com.backend.integrador.repository.ICaracteristicasRepository;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.repository.IImagenProductoRepository;
 import com.backend.integrador.repository.IProductoRepository;
+import com.backend.integrador.repository.IReservaRepository;
 import com.backend.integrador.service.IImagenProductoService;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,8 +51,43 @@ public class ProductoServiceImp implements IProductoService{
     private ICategoriaRepository categoriaRepository;
     @Autowired
     private ICaracteristicasRepository caracteristicasRepository;
+    @Autowired
+    private IReservaRepository reservaRepository;
 
-    
+
+    @Override
+    public List<ProductoSalidaDTO> buscarPorCategoria(Long id){
+        List<Producto> productosCategoria = productoRepository.findByCategoriaId(id);
+        List<ProductoSalidaDTO> productosCategoriaSalida = productosCategoria.stream()
+        .map(producto -> {
+            return ProductoMapper.toProductoSalidaDTO(producto, imagenProductoRepository.findByProductoId(id));
+        })
+        .toList();
+        return productosCategoriaSalida;
+    }
+
+    @Override
+    public List<ProductoSalidaDTO>  productosDisponiblesFechas(LocalDate fechaInicial, LocalDate fechaFinal){
+        // filtro todos los productos por un rango de fechas
+        List<Producto> productosDisponibles = reservaRepository.filtrarProductoPorRangoFechas(fechaInicial, fechaFinal); 
+        List<ProductoSalidaDTO> productosDisponiblesDTO = productosDisponibles.stream()
+                                                                              .map(producto -> {
+                                                                                return ProductoMapper.toProductoSalidaDTO(producto, imagenProductoRepository.findByProductoId(producto.getId()));
+                                                                              })
+                                                                              .toList();
+        return productosDisponiblesDTO; 
+    }
+
+    @Override
+    public List<ProductoSalidaDTO> productosDisponiblesFechasYNombre(LocalDate fechaInicial, LocalDate fechaFinal, String busqueda){
+        List<Producto> productosDisponibles = reservaRepository.filtrarProductosPorRangoFechasYNombre(fechaInicial, fechaFinal, busqueda);
+        List<ProductoSalidaDTO> productosDisponiblesDTO = productosDisponibles.stream()
+                                                                              .map(producto -> {
+                                                                                return ProductoMapper.toProductoSalidaDTO(producto, imagenProductoRepository.findByProductoId(producto.getId()));
+                                                                              })
+                                                                              .toList();
+        return productosDisponiblesDTO;
+    }
 
     @Override
     public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
