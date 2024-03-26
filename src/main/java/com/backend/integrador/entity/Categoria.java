@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.Id;
 
 @Entity
-@Table( name = "categoria")
+@Table( name = "categorias")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
