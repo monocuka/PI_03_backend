@@ -2,7 +2,6 @@ package com.backend.integrador.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.backend.integrador.dto.error.ErrorResponseDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
+import com.backend.integrador.entity.Producto;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -29,15 +29,35 @@ public class ProductoController {
     @Autowired
     private IProductoService productoService;
 
+
+    @GetMapping("/categoria/{id}")
+    public ResponseEntity<?> buscarPorCategoria(@PathVariable Long id){
+        List<ProductoSalidaDTO> productosCategoria = productoService.buscarPorCategoria(id);
+        if(productosCategoria == null || productosCategoria.isEmpty()){
+            return new ResponseEntity<>("No hay productos con esa categoria.", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().body(productosCategoria);
+    }
+
     @GetMapping("/disponibilidad/fechainicial/{fechaInicial}/fechafinal/{fechaFinal}")
     public ResponseEntity<?> buscarProductoXFechas(
         @RequestParam(required = false) String busqueda,
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaInicial,
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable LocalDate fechaFinal) {
 
-        String valoresObtenidos = "Busqueda: " + busqueda +", Fecha Inicial: " + fechaInicial + ", Fecha Final: " + fechaFinal;
+        List<ProductoSalidaDTO> productosDisponibles = null;
+        
+        if(busqueda == null){
+            productosDisponibles = productoService.productosDisponiblesFechas(fechaFinal, fechaFinal);
+        } else {
+            productosDisponibles = productoService.productosDisponiblesFechasYNombre(fechaInicial, fechaFinal, busqueda);
+        }
 
-        return ResponseEntity.ok().body(valoresObtenidos);
+        if (productosDisponibles == null || productosDisponibles.isEmpty()) {
+            return new ResponseEntity<>("No hay productos buscados.", HttpStatus.NOT_FOUND);
+        } else {
+            return ResponseEntity.ok().body(productosDisponibles);
+        }
     }
 
     @GetMapping("/nombresSimilares/{busqueda}")
