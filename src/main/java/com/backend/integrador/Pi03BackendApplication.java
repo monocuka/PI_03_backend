@@ -157,6 +157,8 @@ public class Pi03BackendApplication implements CommandLineRunner{
 		imagenProductoRepository.save(new ImagenProducto(29L,"http://localhost:8080/api/imagenes/img10_2.jpg", productoRepository.findById(10L).orElse(null)));
 		imagenProductoRepository.save(new ImagenProducto(30L,"http://localhost:8080/api/imagenes/img10_3.jpg", productoRepository.findById(10L).orElse(null)));
 
+		
+
 		// Crear usuario ADMIN		
 		List<Rol> roles = new ArrayList<>();
 		Rol rolAdmin = new Rol();
