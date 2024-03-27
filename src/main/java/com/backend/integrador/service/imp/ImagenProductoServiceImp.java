@@ -37,7 +37,7 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
             // Creación de la imagen
             ImagenProducto img = new ImagenProducto();
             img.setProducto(producto);
-            img.setUrlImagen("localhost:8080/api/imagenes/"+fileName);
+            img.setUrlImagen("http://localhost:8080/api/imagenes/"+fileName);
             return imagenRepository.save(img);
         } catch (IOException e) {
             return null;
