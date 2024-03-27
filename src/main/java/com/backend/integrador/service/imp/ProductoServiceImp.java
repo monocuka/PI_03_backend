@@ -8,8 +8,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,13 +18,10 @@ import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
-import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
-import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
 import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
-import com.backend.integrador.entity.Reserva;
 import com.backend.integrador.repository.ICaracteristicasRepository;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.repository.IImagenProductoRepository;
