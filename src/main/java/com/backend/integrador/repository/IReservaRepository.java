@@ -33,7 +33,10 @@ public interface IReservaRepository extends JpaRepository<Reserva, Long> {
     List<Producto> filtrarProductosPorRangoFechasYNombre(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin, @Param("busqueda") String busqueda);
 
     List<Reserva> findByProductoId(Long productoId);
-    List<Reserva> findByUsuario(Usuario usuario);
+
+    @Query("SELECT r FROM Reserva r WHERE r.usuario.email = :email")
+    List<Reserva> searchByUsuarioEmail(@Param("email") String email);
+    
 }
 
 

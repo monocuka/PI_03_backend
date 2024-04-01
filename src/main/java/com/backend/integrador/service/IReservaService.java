@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.backend.integrador.dto.reserva.ReservaEntradaDTO;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
+import com.backend.integrador.dto.reserva.ReservaUsuarioEmailDTO;
 
 public interface IReservaService {
     public ReservaSalidaDTO guardarReserva(ReservaEntradaDTO reserva);
@@ -11,5 +12,5 @@ public interface IReservaService {
     public List<ReservaSalidaDTO> obtenerTodosLasReservas();
     public void eliminarReserva(Long idReserva);
     public List<ReservaSalidaDTO> buscarPorProductoId(Long id);
-    public List<ReservaSalidaDTO> obtenerReservasUsuario(String email);
+    public List<ReservaSalidaDTO> obtenerReservasUsuario(ReservaUsuarioEmailDTO email);
 }

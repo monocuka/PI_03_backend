@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.integrador.dto.reserva.ReservaEntradaDTO;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
+import com.backend.integrador.dto.reserva.ReservaUsuarioEmailDTO;
 import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
 import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.ImagenProducto;
@@ -54,8 +55,15 @@ public class ReservaServiceImp implements IReservaService{
     }
 
     @Override
-    public List<ReservaSalidaDTO> obtenerReservasUsuario(String email){
-        return null;
+    public List<ReservaSalidaDTO> obtenerReservasUsuario(ReservaUsuarioEmailDTO email){
+        List<Reserva> reservas =  reservaRepository.searchByUsuarioEmail(email.getEmail());
+        List<ReservaSalidaDTO> reservasSalida = reservas.stream()
+        .map(reserva -> {
+            List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(reserva.getProducto().getId());
+            return ReservaMapper.toReservaSalidaDTO(reserva, imagenesDelProducto);
+        }).toList();
+
+        return reservasSalida;
     }
 
     @Override

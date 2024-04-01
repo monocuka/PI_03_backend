@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.backend.integrador.dto.reserva.ReservaEntradaDTO;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
+import com.backend.integrador.dto.reserva.ReservaUsuarioEmailDTO;
+import com.backend.integrador.dto.usuario.UsuarioListarSalidaDTO;
 import com.backend.integrador.service.IReservaService;
 
 @RestController
@@ -26,6 +28,12 @@ public class ReservaController {
     @GetMapping("/listar")
     public List<ReservaSalidaDTO> listarReservas(){
         return reservaService.obtenerTodosLasReservas();
+    }
+
+    @GetMapping("/listarUsuariosReserva")
+    public List<ReservaSalidaDTO> listarUsuarioReserva(@RequestBody ReservaUsuarioEmailDTO email){
+        System.out.println(email);
+        return reservaService.obtenerReservasUsuario(email);
     }
 
     @GetMapping("/producto/{id}")
