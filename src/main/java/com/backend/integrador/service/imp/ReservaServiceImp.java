@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.integrador.dto.reserva.ReservaEntradaDTO;
-import com.backend.integrador.dto.reserva.ReservaGuardarDTO;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
 import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
 import com.backend.integrador.entity.Caracteristica;
@@ -55,25 +54,25 @@ public class ReservaServiceImp implements IReservaService{
     }
 
     @Override
-    public ReservaSalidaDTO guardarReserva(String reservaEntrada) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ReservaGuardarDTO reservaGuardar = objectMapper.readValue(reservaEntrada, ReservaGuardarDTO.class);
-        Producto producto = productoRepository.findById(reservaGuardar.getId_producto()).orElse(null);
-        Usuario usuario = usuarioRepository.findById(reservaGuardar.getId_usuario()).orElse(null);
-        List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(producto.getId());
+    public ReservaSalidaDTO guardarReserva(ReservaEntradaDTO reserva) {
+        // ObjectMapper objectMapper = new ObjectMapper();
+        // ReservaGuardarDTO reservaGuardar = objectMapper.readValue(reservaEntrada, ReservaGuardarDTO.class);
+        // Producto producto = productoRepository.findById(reservaGuardar.getId_producto()).orElse(null);
+        // Usuario usuario = usuarioRepository.findById(reservaGuardar.getId_usuario()).orElse(null);
+        // List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(producto.getId());
 
-        Reserva reserva = new Reserva();
+        // Reserva reserva = new Reserva();
 
-        reserva.setCantidad(reservaGuardar.getCantidad());
-        reserva.setFecha_desde(reservaGuardar.getFecha_desde());
-        reserva.setFecha_hasta(reservaGuardar.getFecha_hasta());
-        reserva.setProducto(producto);
-        reserva.setUsuario(usuario);
+        // reserva.setCantidad(reservaGuardar.getCantidad());
+        // reserva.setFecha_desde(reservaGuardar.getFecha_desde());
+        // reserva.setFecha_hasta(reservaGuardar.getFecha_hasta());
+        // reserva.setProducto(producto);
+        // reserva.setUsuario(usuario);
         
-        //Reserva reserva = ReservaMapper.toReserva(reservaEntrada, producto, null);
-        ReservaSalidaDTO reservaSalidaDTO = ReservaMapper.toReservaSalidaDTO(reserva, imagenes);
-        reservaRepository.save(reserva);
-        return reservaSalidaDTO;
+        // //Reserva reserva = ReservaMapper.toReserva(reservaEntrada, producto, null);
+        // ReservaSalidaDTO reservaSalidaDTO = ReservaMapper.toReservaSalidaDTO(reserva, imagenes);
+        // reservaRepository.save(reserva);
+        return null;
     }
 
     @Override

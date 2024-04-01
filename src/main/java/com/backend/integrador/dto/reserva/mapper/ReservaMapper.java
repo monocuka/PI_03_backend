@@ -1,16 +1,13 @@
 package com.backend.integrador.dto.reserva.mapper;
 
-import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
 
 import java.util.List;
-import java.util.Set;
 
 import com.backend.integrador.dto.categoria.mapper.CategoriaMapper;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
 import com.backend.integrador.dto.reserva.ReservaEntradaDTO;
-import com.backend.integrador.dto.reserva.ReservaGuardarDTO;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
 import com.backend.integrador.dto.usuario.mapper.UsuarioMapper;
 import com.backend.integrador.entity.Reserva;
@@ -38,12 +35,12 @@ public class ReservaMapper {
       return reservaSalida;
    }
 
-   public static Reserva toReserva(ReservaGuardarDTO reservaGuardar, Producto producto, Usuario usuario){
+   public static Reserva toReserva(ReservaEntradaDTO reservaEntrada, Producto producto, Usuario usuario){
       Reserva reserva = new Reserva();
 
-      reserva.setCantidad(reservaGuardar.getCantidad());
-      reserva.setFecha_desde(reservaGuardar.getFecha_desde());
-      reserva.setFecha_hasta(reservaGuardar.getFecha_hasta());
+      reserva.setCantidad(reservaEntrada.getCantidad());
+      reserva.setFecha_desde(reservaEntrada.getFechaDesde());
+      reserva.setFecha_hasta(reservaEntrada.getFechaHasta());
       reserva.setUsuario(usuario);
       reserva.setProducto(producto);
 
