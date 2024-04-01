@@ -54,7 +54,11 @@ public class ReservaController {
     
     @PostMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarReserva(@PathVariable Long id){
-        reservaService.eliminarReserva(id);
-        return ResponseEntity.ok().build();
+        boolean isDeleted = reservaService.eliminarReserva(id);
+        if (isDeleted) {
+            return ResponseEntity.ok("Reserva con ID " + id + " se borro correctamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado la reserva con ID " + id);
+        }
     }
 }

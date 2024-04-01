@@ -10,7 +10,7 @@ public interface IReservaService {
     public ReservaSalidaDTO guardarReserva(ReservaEntradaDTO reserva);
     public ReservaSalidaDTO obtenerReservaPorId(Long id);
     public List<ReservaSalidaDTO> obtenerTodosLasReservas();
-    public void eliminarReserva(Long idReserva);
+    public boolean eliminarReserva(Long idReserva);
     public List<ReservaSalidaDTO> buscarPorProductoId(Long id);
     public List<ReservaSalidaDTO> obtenerReservasUsuario(ReservaUsuarioEmailDTO email);
 }

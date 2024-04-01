@@ -109,12 +109,14 @@ public class ReservaServiceImp implements IReservaService{
     }
 
     @Override
-    public void eliminarReserva(Long idReserva){
+    public boolean eliminarReserva(Long idReserva){
         Reserva reservaAEliminar = reservaRepository.findById(idReserva).orElse(null);
         if (reservaAEliminar != null) {
             reservaRepository.delete(reservaAEliminar);
+            return true;
         } else {
             System.out.println("No se ha encontrado la reserva con ID " + idReserva); 
+            return false;
         }
     }
 
