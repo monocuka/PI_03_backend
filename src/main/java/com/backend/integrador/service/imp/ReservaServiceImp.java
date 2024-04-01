@@ -54,25 +54,24 @@ public class ReservaServiceImp implements IReservaService{
     }
 
     @Override
-    public ReservaSalidaDTO guardarReserva(ReservaEntradaDTO reserva) {
-        // ObjectMapper objectMapper = new ObjectMapper();
-        // ReservaGuardarDTO reservaGuardar = objectMapper.readValue(reservaEntrada, ReservaGuardarDTO.class);
-        // Producto producto = productoRepository.findById(reservaGuardar.getId_producto()).orElse(null);
-        // Usuario usuario = usuarioRepository.findById(reservaGuardar.getId_usuario()).orElse(null);
-        // List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(producto.getId());
+    public ReservaSalidaDTO guardarReserva(ReservaEntradaDTO reservaEntrada) {
+        Producto producto = productoRepository.findById(reservaEntrada.getIdProducto()).orElse(null);
+        Usuario usuario = usuarioRepository.findById(reservaEntrada.getIdUsuario()).orElse(null);
+        List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(producto.getId());
 
-        // Reserva reserva = new Reserva();
-
-        // reserva.setCantidad(reservaGuardar.getCantidad());
-        // reserva.setFecha_desde(reservaGuardar.getFecha_desde());
-        // reserva.setFecha_hasta(reservaGuardar.getFecha_hasta());
-        // reserva.setProducto(producto);
-        // reserva.setUsuario(usuario);
+        Reserva reserva = new Reserva();
+        reserva.setCantidad(reservaEntrada.getCantidad());
+        reserva.setFecha_desde(reservaEntrada.getFechaDesde());
+        reserva.setFecha_hasta(reservaEntrada.getFechaHasta());
+        reserva.setProducto(producto);
+        reserva.setUsuario(usuario);
         
-        // //Reserva reserva = ReservaMapper.toReserva(reservaEntrada, producto, null);
-        // ReservaSalidaDTO reservaSalidaDTO = ReservaMapper.toReservaSalidaDTO(reserva, imagenes);
-        // reservaRepository.save(reserva);
-        return null;
+        ReservaSalidaDTO reservaSalidaDTO = ReservaMapper.toReservaSalidaDTO(reserva, imagenes);
+
+        reservaRepository.save(reserva);
+        System.out.println("[GuardarReserva, service]: reserva guardada correctamente");
+
+        return reservaSalidaDTO;
     }
 
     @Override
