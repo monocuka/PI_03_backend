@@ -51,4 +51,10 @@ public class ReservaController {
         reservaService.guardarReserva(reserva);
         return ResponseEntity.ok().build();
     }
+    
+    @PostMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarReserva(@PathVariable Long id){
+        reservaService.eliminarReserva(id);
+        return ResponseEntity.ok().build();
+    }
 }
