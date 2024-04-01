@@ -69,7 +69,6 @@ public class ReservaServiceImp implements IReservaService{
         ReservaSalidaDTO reservaSalidaDTO = ReservaMapper.toReservaSalidaDTO(reserva, imagenes);
 
         reservaRepository.save(reserva);
-        System.out.println("[GuardarReserva, service]: reserva guardada correctamente");
 
         return reservaSalidaDTO;
     }

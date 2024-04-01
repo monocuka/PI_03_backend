@@ -40,7 +40,6 @@ public class ReservaController {
 
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarReserva(@RequestBody ReservaEntradaDTO reserva){
-        System.out.println("[ReservaController] reserva: " + reserva);
         reservaService.guardarReserva(reserva);
         return ResponseEntity.ok().build();
     }
