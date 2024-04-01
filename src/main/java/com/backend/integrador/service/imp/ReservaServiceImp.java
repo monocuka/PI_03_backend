@@ -54,9 +54,14 @@ public class ReservaServiceImp implements IReservaService{
     }
 
     @Override
+    public List<ReservaSalidaDTO> obtenerReservasUsuario(String email){
+        return null;
+    }
+
+    @Override
     public ReservaSalidaDTO guardarReserva(ReservaEntradaDTO reservaEntrada) {
         Producto producto = productoRepository.findById(reservaEntrada.getIdProducto()).orElse(null);
-        Usuario usuario = usuarioRepository.findById(reservaEntrada.getIdUsuario()).orElse(null);
+        Usuario usuario = usuarioRepository.findByEmail(reservaEntrada.getEmailUsuario()).orElse(null);
         List<ImagenProducto> imagenes = imagenProductoRepository.findByProductoId(producto.getId());
 
         Reserva reserva = new Reserva();

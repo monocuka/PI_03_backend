@@ -11,4 +11,5 @@ public interface IReservaService {
     public List<ReservaSalidaDTO> obtenerTodosLasReservas();
     public void eliminarReserva(Long idReserva);
     public List<ReservaSalidaDTO> buscarPorProductoId(Long id);
+    public List<ReservaSalidaDTO> obtenerReservasUsuario(String email);
 }

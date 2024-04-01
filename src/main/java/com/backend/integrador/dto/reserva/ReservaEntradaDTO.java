@@ -14,5 +14,5 @@ public class ReservaEntradaDTO {
     private LocalDate fechaHasta;
     private int cantidad;
     private Long idProducto;
-    private Long idUsuario;
+    private String emailUsuario;
 }

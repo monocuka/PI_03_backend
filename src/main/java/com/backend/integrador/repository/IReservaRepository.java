@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 import com.backend.integrador.entity.Producto;
 import com.backend.integrador.entity.Reserva;
+import com.backend.integrador.entity.Usuario;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public interface IReservaRepository extends JpaRepository<Reserva, Long> {
     List<Producto> filtrarProductosPorRangoFechasYNombre(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin, @Param("busqueda") String busqueda);
 
     List<Reserva> findByProductoId(Long productoId);
+    List<Reserva> findByUsuario(Usuario usuario);
 }
 
 
