@@ -32,7 +32,6 @@ public class ReservaController {
 
     @GetMapping("/listarUsuariosReserva")
     public List<ReservaSalidaDTO> listarUsuarioReserva(@RequestBody ReservaUsuarioEmailDTO email){
-        System.out.println(email);
         return reservaService.obtenerReservasUsuario(email);
     }
 
