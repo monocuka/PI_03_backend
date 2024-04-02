@@ -3,16 +3,15 @@ package com.backend.integrador.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
-//import com.backend.integrador.entity.Producto;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 public interface IProductoService {
-    public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen)throws JsonMappingException, JsonProcessingException;
+    public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen)throws DuplicateKeyException, JsonProcessingException;
     public ProductoSalidaDTO obtenerProductoPorId(Long id);
     public List<ProductoSalidaDTO> obtenerTodosLosProductos();
     public void eliminarProducto(Long idProducto);
