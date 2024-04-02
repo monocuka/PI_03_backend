@@ -3,6 +3,7 @@ package com.backend.integrador.controllers;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,10 +72,21 @@ public class ProductoController {
         try {
             ProductoSalidaDTO productoSalidaDTO = productoService.guardarProducto(productoStr, imagen);
             return new ResponseEntity<>(productoSalidaDTO, HttpStatus.CREATED);
+        } catch (DuplicateKeyException e) {
+            ErrorResponseDTO errorResponse = new ErrorResponseDTO(e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(errorResponse);
         } catch (JsonProcessingException e) {
-            ErrorResponseDTO errorResponse = new ErrorResponseDTO("Error de Estructura de json");
+            // Aquí parseamos el mensaje JSON del error
+            ErrorResponseDTO errorResponse = new ErrorResponseDTO(e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                    .body(errorResponse);
+        } catch (RuntimeException e) {
+            ErrorResponseDTO errorResponse = new ErrorResponseDTO(e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(errorResponse);
         }
         
