@@ -3,6 +3,8 @@ package com.backend.integrador.security.service.imp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +18,10 @@ import com.backend.integrador.security.dto.AuthenticationRequest;
 import com.backend.integrador.security.dto.RegisterRequest;
 import com.backend.integrador.security.service.AuthService;
 import com.backend.integrador.security.service.JWTService;
+import com.fasterxml.jackson.core.JsonLocation;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +35,7 @@ public class AuthServiceImp implements AuthService{
 	
 	
 	@Override
-	public AuthResponse register(RegisterRequest request) {
+	public AuthResponse register(RegisterRequest request) throws DuplicateKeyException {
 		List<Rol> roles = new ArrayList<>();
 		Rol rol = new Rol();
 		rol.setNombreRol("ROLE_USER");
@@ -42,15 +48,22 @@ public class AuthServiceImp implements AuthService{
 				.roles(roles)
 				.build();
 		
-		Usuario usuarioGuardado = usuarioRepository.save(user);
-		var jwtToken = jwtService.generateToken(user);
-		return AuthResponse.builder()
-							.name(usuarioGuardado.getName())
-							.lastName(usuarioGuardado.getLastName())
-							.email(usuarioGuardado.getEmail())
-							.token(jwtToken)
-							.roles(roles)
-							.build();
+		try{
+			Usuario usuarioGuardado = usuarioRepository.save(user);
+			var jwtToken = jwtService.generateToken(user);
+			return AuthResponse.builder()
+								.name(usuarioGuardado.getName())
+								.lastName(usuarioGuardado.getLastName())
+								.email(usuarioGuardado.getEmail())
+								.token(jwtToken)
+								.roles(roles)
+								.build();
+
+		} catch (DataIntegrityViolationException e) {
+            throw new DuplicateKeyException("El usuario ya se encuentra registrado", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Ocurrió un error al registrar el usuario", e);
+        }
 	}
 
 	@Override
