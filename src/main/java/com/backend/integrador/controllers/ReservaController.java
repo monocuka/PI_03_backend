@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.backend.integrador.dto.reserva.ReservaEntradaDTO;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
+import com.backend.integrador.dto.reserva.ReservaSalidaProductoDTO;
 import com.backend.integrador.dto.reserva.ReservaUsuarioEmailDTO;
-import com.backend.integrador.dto.usuario.UsuarioListarSalidaDTO;
 import com.backend.integrador.service.IReservaService;
 
 @RestController
@@ -37,8 +37,8 @@ public class ReservaController {
 
     @GetMapping("/producto/{id}")
     public ResponseEntity<?> buscarReservaPorProductoId(@PathVariable Long id){
-        List<ReservaSalidaDTO> reservasSalida =  reservaService.buscarPorProductoId(id);
-        if (reservasSalida.isEmpty() || reservasSalida == null) {
+        ReservaSalidaProductoDTO reservasSalida =  reservaService.buscarPorProductoId(id);
+        if ( reservasSalida == null) {
             return new ResponseEntity<>("Este producto no tiene reservas.", HttpStatus.NOT_FOUND);
         } else {
             return ResponseEntity.ok().body(reservasSalida);

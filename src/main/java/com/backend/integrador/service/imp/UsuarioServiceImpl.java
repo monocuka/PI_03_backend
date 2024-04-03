@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.rol.mapper.RolMapper;
 import com.backend.integrador.dto.usuario.UsuarioEntradaDTO;
 import com.backend.integrador.dto.usuario.UsuarioListarSalidaDTO;

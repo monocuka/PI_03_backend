@@ -1,19 +1,18 @@
 package com.backend.integrador.service.imp;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.List;
-import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.integrador.dto.producto.ProductoSalidaDTO;
+import com.backend.integrador.dto.producto.mapper.ProductoMapper;
 import com.backend.integrador.dto.reserva.ReservaEntradaDTO;
+import com.backend.integrador.dto.reserva.ReservaFechasSalidaDTO;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
+import com.backend.integrador.dto.reserva.ReservaSalidaProductoDTO;
 import com.backend.integrador.dto.reserva.ReservaUsuarioEmailDTO;
 import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
-import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
 import com.backend.integrador.entity.Reserva;
@@ -24,8 +23,6 @@ import com.backend.integrador.repository.IProductoRepository;
 import com.backend.integrador.repository.IReservaRepository;
 import com.backend.integrador.repository.IUsuarioRepository;
 import com.backend.integrador.service.IReservaService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ReservaServiceImp implements IReservaService{
@@ -43,14 +40,22 @@ public class ReservaServiceImp implements IReservaService{
 
 
     @Override
-    public List<ReservaSalidaDTO> buscarPorProductoId(Long id){
-        List<Reserva> reservas = reservaRepository.findByProductoId(id);
-        List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(id);
-        List<ReservaSalidaDTO> reservasSalidaDTO = reservas.stream()
+    public ReservaSalidaProductoDTO buscarPorProductoId(Long id){
+        List<Reserva> reservas = reservaRepository.findByProductoId(id); // buscamos las reservas relacionadas al producto
+        List<ImagenProducto> imagenesDelProducto = imagenProductoRepository.findByProductoId(id); // buscamos las imagenes del producto
+        List<ReservaFechasSalidaDTO> fechasSalida = reservas.stream() // cargamos las fechas del producto en el dto
         .map(reserva -> {
-            return ReservaMapper.toReservaSalidaDTO(reserva, imagenesDelProducto);
-        })
-        .toList();
+            return ReservaMapper.toFechasSalida(reserva);
+        }).toList();
+        // mapeamos el producto al salidaDto
+        ProductoSalidaDTO productoSalida = ProductoMapper.toProductoSalidaDTO(productoRepository.findById(id).orElse(null), imagenesDelProducto);
+        
+        ReservaSalidaProductoDTO reservasSalidaDTO = new ReservaSalidaProductoDTO(); // creamos el reservaSalidaDto
+        // cargamos el reservaSalidaDTO
+        reservasSalidaDTO.setProducto(productoSalida);
+        reservasSalidaDTO.setReservas(fechasSalida);
+
+
         return reservasSalidaDTO;
     }
 
@@ -99,7 +104,8 @@ public class ReservaServiceImp implements IReservaService{
 
     @Override
     public List<ReservaSalidaDTO> obtenerTodosLasReservas(){
-        List<Reserva> reservas = reservaRepository.findAll();
+        List<Reserva> reservas = reservaRepository.findAll(); // buscamos todas las reservas
+        
         List<ReservaSalidaDTO> reservasSalida = reservas.stream()
                                                 .map(reserva -> {
                                                     return ReservaMapper.toReservaSalidaDTO(reserva, imagenProductoRepository.findByProductoId(reserva.getId()));

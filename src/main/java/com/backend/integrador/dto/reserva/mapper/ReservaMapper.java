@@ -5,11 +5,10 @@ import com.backend.integrador.entity.Producto;
 
 import java.util.List;
 
-import com.backend.integrador.dto.categoria.mapper.CategoriaMapper;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
 import com.backend.integrador.dto.reserva.ReservaEntradaDTO;
+import com.backend.integrador.dto.reserva.ReservaFechasSalidaDTO;
 import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
-import com.backend.integrador.dto.usuario.mapper.UsuarioMapper;
 import com.backend.integrador.entity.Reserva;
 import com.backend.integrador.entity.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,5 +43,14 @@ public class ReservaMapper {
       reserva.setProducto(producto);
 
       return reserva;
+   }
+
+   public static ReservaFechasSalidaDTO toFechasSalida(Reserva reserva){
+      ReservaFechasSalidaDTO fechasSalida = new ReservaFechasSalidaDTO();
+
+      fechasSalida.setFechaDesde(reserva.getFecha_desde());
+      fechasSalida.setFechaHasta(reserva.getFecha_hasta());
+
+      return fechasSalida;
    }
 }
