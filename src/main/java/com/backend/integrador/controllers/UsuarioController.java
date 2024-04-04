@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.integrador.dto.usuario.UsuarioEntradaDTO;
 import com.backend.integrador.dto.usuario.UsuarioListarSalidaDTO;
 import com.backend.integrador.service.IUsuarioService;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/api/usuario")

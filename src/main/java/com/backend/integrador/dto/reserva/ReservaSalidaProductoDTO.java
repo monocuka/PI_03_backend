@@ -1,8 +1,7 @@
 package com.backend.integrador.dto.reserva;
 
-import java.time.LocalDate;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
-
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservaSalidaDTO {
-    private LocalDate fecha_desde;
-    private LocalDate fecha_hasta;
-    
+public class ReservaSalidaProductoDTO {
+    private List<ReservaFechasSalidaDTO> reservas;
     private ProductoSalidaDTO producto;
 }
