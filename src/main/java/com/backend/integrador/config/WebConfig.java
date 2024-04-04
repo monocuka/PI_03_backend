@@ -1,3 +1,6 @@
+
+import java.util.List;
+
 package com.backend.integrador.config;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,13 +16,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${frontend.url}")
-    private String frontendUrl;
+    @Value("${frontend.origins}")
+    private List<String> allowedOrigins;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(frontendUrl) // or use "*" to allow all origins
+                .allowedOrigins(allowedOrigins.toArray(new String[0]))
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
