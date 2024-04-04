@@ -9,9 +9,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.server.ResponseStatusException;
 
 import com.backend.integrador.dto.producto.ProductoDTO;
 import com.backend.integrador.dto.producto.ProductoEntradaDTO;
@@ -29,8 +32,12 @@ import com.backend.integrador.repository.IProductoRepository;
 import com.backend.integrador.repository.IReservaRepository;
 import com.backend.integrador.service.IImagenProductoService;
 import com.backend.integrador.service.IProductoService;
+import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 @Service
@@ -85,7 +92,7 @@ public class ProductoServiceImp implements IProductoService{
     }
 
     @Override
-    public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen) throws JsonProcessingException {
+    public ProductoSalidaDTO guardarProducto(String productoStr, MultipartFile imagen) throws DuplicateKeyException, JsonProcessingException{
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             ProductoEntradaDTO productoEntradaDTO = objectMapper.readValue(productoStr, ProductoEntradaDTO.class);
@@ -102,9 +109,21 @@ public class ProductoServiceImp implements IProductoService{
             ImagenProducto imagenConProducto = imagenProductoServices.guardaImagenProducto(imagen, productoGuardado);
             List<ImagenProducto> listaDeImagenes = Collections.singletonList(imagenConProducto);
             return ProductoMapper.toProductoSalidaDTO(productoGuardado, listaDeImagenes);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateKeyException("El producto ya se encuentra registrado", e);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw e;
+            JsonNodeFactory factory = JsonNodeFactory.instance;
+            ObjectNode node = factory.objectNode();
+            node.put("message", "Error de Estructura de json");
+            JsonLocation location = e.getLocation();
+            throw new JsonProcessingException("Error de Estructura de json", location) {
+                @Override
+                public String getMessage() {
+                    return node.toString();
+                }
+            };
+        } catch (Exception e) {
+            throw new RuntimeException("Ocurrió un error al guardar el producto", e);
         }
     }
 

@@ -32,7 +32,7 @@ public class Producto {
     @Column( name = "pro_id")
     private  Long id;
     
-    @Column( name = "pro_nombre")
+    @Column( name = "pro_nombre", unique = true)
     private String nombre;
     
     @Column( name = "pro_descripcion", length = 500)
