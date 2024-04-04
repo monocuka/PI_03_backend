@@ -32,10 +32,6 @@ public class CategoriaServiceImp implements ICategoriaService{
     @Value("${server.endpoint}")
     private String serverEndpoint;
 
-    @Value("${server.port}")
-    private String serverPort;
-    
-
     @Override
     public CategoriaSalidaDTO modificarCategoria(String categoriaStr, MultipartFile imagen) throws Exception{
         ObjectMapper objectMapper = new ObjectMapper();
@@ -80,7 +76,7 @@ public class CategoriaServiceImp implements ICategoriaService{
             Files.write(path, imagen.getBytes());
             // Creación de la imagen
            
-            return  serverEndpoint+":"+serverPort+"/api/categoria/imagen/"+fileName;
+            return  serverEndpoint+"/api/categoria/imagen/"+fileName;
         } catch (IOException e) {
             return "Fallo la creacion de la imagen";
         }

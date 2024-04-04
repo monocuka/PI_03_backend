@@ -26,9 +26,6 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
 
     @Value("${server.endpoint}")
     private String serverEndpoint;
-
-    @Value("${server.port}")
-    private String serverPort;
     
     @Override
     public ImagenProducto guardaImagenProducto(MultipartFile imagen, Producto producto) {
@@ -44,7 +41,7 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
             // Creación de la imagen
             ImagenProducto img = new ImagenProducto();
             img.setProducto(producto);
-            img.setUrlImagen(serverEndpoint+":"+serverPort+"/api/imagenes/"+fileName);
+            img.setUrlImagen(serverEndpoint+"/api/imagenes/"+fileName);
             return imagenRepository.save(img);
         } catch (IOException e) {
             return null;

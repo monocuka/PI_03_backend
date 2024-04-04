@@ -16,13 +16,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${frontend.url}")
     private String frontendUrl;
 
-    @Value("${frontend.port}")
-    private String frontendPort;
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(frontendUrl+":"+frontendPort) // or use "*" to allow all origins
+                .allowedOrigins(frontendUrl) // or use "*" to allow all origins
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);

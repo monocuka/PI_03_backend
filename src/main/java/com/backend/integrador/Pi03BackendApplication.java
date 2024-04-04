@@ -46,10 +46,6 @@ public class Pi03BackendApplication implements CommandLineRunner{
 
 	@Value("${server.endpoint}")
 	private String serverEndpoint;
-
-	@Value("${server.port}")
-	private String serverPort;
-	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Pi03BackendApplication.class, args);
@@ -134,36 +130,36 @@ public class Pi03BackendApplication implements CommandLineRunner{
 		productoRepository.save(new Producto(10L,"Minicargador de Orugas 325G", "Capacidad de operación nominal: 1176 kg (2,590 lb.). Potencia Bruta: 55,0 kW (74 CV) a 2.500 rpm. Potencia neta: 52,7 kW (71 CV) a 2.500 rpm. Peso operativo: 4313 kg (9.500 lb.)", 150.0, categoriaRepository.findById(4L).orElse(null), caracteristicas));
 		
 		// Se le cargan la imagenes a los productos
-		imagenProductoRepository.save(new ImagenProducto(1L,serverEndpoint+":"+serverPort+"/api/imagenes/img1_1.png", productoRepository.findById(1L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(2L,serverEndpoint+":"+serverPort+"/api/imagenes/img1_2.png", productoRepository.findById(1L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(3L,serverEndpoint+":"+serverPort+"/api/imagenes/img1_3.png", productoRepository.findById(1L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(4L,serverEndpoint+":"+serverPort+"/api/imagenes/img2_1.png", productoRepository.findById(2L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(5L,serverEndpoint+":"+serverPort+"/api/imagenes/img2_2.png", productoRepository.findById(2L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(6L,serverEndpoint+":"+serverPort+"/api/imagenes/img2_3.png", productoRepository.findById(2L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(7L,serverEndpoint+":"+serverPort+"/api/imagenes/img3_1.png", productoRepository.findById(3L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(8L,serverEndpoint+":"+serverPort+"/api/imagenes/img3_2.png", productoRepository.findById(3L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(9L,serverEndpoint+":"+serverPort+"/api/imagenes/img3_3.png", productoRepository.findById(3L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(10L,serverEndpoint+":"+serverPort+"/api/imagenes/img4_1.png", productoRepository.findById(4L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(11L,serverEndpoint+":"+serverPort+"/api/imagenes/img4_2.png", productoRepository.findById(4L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(12L,serverEndpoint+":"+serverPort+"/api/imagenes/img4_3.png", productoRepository.findById(4L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(13L,serverEndpoint+":"+serverPort+"/api/imagenes/img5_1.png", productoRepository.findById(5L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(14L,serverEndpoint+":"+serverPort+"/api/imagenes/img5_2.png", productoRepository.findById(5L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(15L,serverEndpoint+":"+serverPort+"/api/imagenes/img5_3.png", productoRepository.findById(5L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(16L,serverEndpoint+":"+serverPort+"/api/imagenes/img6_1.png", productoRepository.findById(6L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(17L,serverEndpoint+":"+serverPort+"/api/imagenes/img6_2.png", productoRepository.findById(6L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(18L,serverEndpoint+":"+serverPort+"/api/imagenes/img6_3.png", productoRepository.findById(6L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(19L,serverEndpoint+":"+serverPort+"/api/imagenes/img7_1.png", productoRepository.findById(7L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(20L,serverEndpoint+":"+serverPort+"/api/imagenes/img7_2.png", productoRepository.findById(7L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(21L,serverEndpoint+":"+serverPort+"/api/imagenes/img7_3.png", productoRepository.findById(7L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(22L,serverEndpoint+":"+serverPort+"/api/imagenes/img8_1.png", productoRepository.findById(8L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(23L,serverEndpoint+":"+serverPort+"/api/imagenes/img8.2.jpg", productoRepository.findById(8L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(24L,serverEndpoint+":"+serverPort+"/api/imagenes/img8.3.jpg", productoRepository.findById(8L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(25L,serverEndpoint+":"+serverPort+"/api/imagenes/img9_1.png", productoRepository.findById(9L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(26L,serverEndpoint+":"+serverPort+"/api/imagenes/img9_2.png", productoRepository.findById(9L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(27L,serverEndpoint+":"+serverPort+"/api/imagenes/img9_3.jpg", productoRepository.findById(9L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(28L,serverEndpoint+":"+serverPort+"/api/imagenes/img10_1.png", productoRepository.findById(10L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(29L,serverEndpoint+":"+serverPort+"/api/imagenes/img10_2.jpg", productoRepository.findById(10L).orElse(null)));
-		imagenProductoRepository.save(new ImagenProducto(30L,serverEndpoint+":"+serverPort+"/api/imagenes/img10_3.jpg", productoRepository.findById(10L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(1L,serverEndpoint+"/api/imagenes/img1_1.png", productoRepository.findById(1L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(2L,serverEndpoint+"/api/imagenes/img1_2.png", productoRepository.findById(1L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(3L,serverEndpoint+"/api/imagenes/img1_3.png", productoRepository.findById(1L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(4L,serverEndpoint+"/api/imagenes/img2_1.png", productoRepository.findById(2L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(5L,serverEndpoint+"/api/imagenes/img2_2.png", productoRepository.findById(2L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(6L,serverEndpoint+"/api/imagenes/img2_3.png", productoRepository.findById(2L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(7L,serverEndpoint+"/api/imagenes/img3_1.png", productoRepository.findById(3L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(8L,serverEndpoint+"/api/imagenes/img3_2.png", productoRepository.findById(3L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(9L,serverEndpoint+"/api/imagenes/img3_3.png", productoRepository.findById(3L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(10L,serverEndpoint+"/api/imagenes/img4_1.png", productoRepository.findById(4L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(11L,serverEndpoint+"/api/imagenes/img4_2.png", productoRepository.findById(4L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(12L,serverEndpoint+"/api/imagenes/img4_3.png", productoRepository.findById(4L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(13L,serverEndpoint+"/api/imagenes/img5_1.png", productoRepository.findById(5L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(14L,serverEndpoint+"/api/imagenes/img5_2.png", productoRepository.findById(5L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(15L,serverEndpoint+"/api/imagenes/img5_3.png", productoRepository.findById(5L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(16L,serverEndpoint+"/api/imagenes/img6_1.png", productoRepository.findById(6L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(17L,serverEndpoint+"/api/imagenes/img6_2.png", productoRepository.findById(6L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(18L,serverEndpoint+"/api/imagenes/img6_3.png", productoRepository.findById(6L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(19L,serverEndpoint+"/api/imagenes/img7_1.png", productoRepository.findById(7L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(20L,serverEndpoint+"/api/imagenes/img7_2.png", productoRepository.findById(7L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(21L,serverEndpoint+"/api/imagenes/img7_3.png", productoRepository.findById(7L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(22L,serverEndpoint+"/api/imagenes/img8_1.png", productoRepository.findById(8L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(23L,serverEndpoint+"/api/imagenes/img8.2.jpg", productoRepository.findById(8L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(24L,serverEndpoint+"/api/imagenes/img8.3.jpg", productoRepository.findById(8L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(25L,serverEndpoint+"/api/imagenes/img9_1.png", productoRepository.findById(9L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(26L,serverEndpoint+"/api/imagenes/img9_2.png", productoRepository.findById(9L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(27L,serverEndpoint+"/api/imagenes/img9_3.jpg", productoRepository.findById(9L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(28L,serverEndpoint+"/api/imagenes/img10_1.png", productoRepository.findById(10L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(29L,serverEndpoint+"/api/imagenes/img10_2.jpg", productoRepository.findById(10L).orElse(null)));
+		imagenProductoRepository.save(new ImagenProducto(30L,serverEndpoint+"/api/imagenes/img10_3.jpg", productoRepository.findById(10L).orElse(null)));
 
 		
 
