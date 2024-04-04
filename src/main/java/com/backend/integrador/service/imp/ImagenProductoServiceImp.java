@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,12 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
 
     @Autowired
     private IImagenProductoRepository imagenRepository;
+
+    @Value("${server.endpoint}")
+    private String serverEndpoint;
+
+    @Value("${server.port}")
+    private String serverPort;
     
     @Override
     public ImagenProducto guardaImagenProducto(MultipartFile imagen, Producto producto) {
@@ -37,7 +44,7 @@ public class ImagenProductoServiceImp implements IImagenProductoService{
             // Creación de la imagen
             ImagenProducto img = new ImagenProducto();
             img.setProducto(producto);
-            img.setUrlImagen("http://localhost:8080/api/imagenes/"+fileName);
+            img.setUrlImagen(serverEndpoint+":"+serverPort+"/api/imagenes/"+fileName);
             return imagenRepository.save(img);
         } catch (IOException e) {
             return null;

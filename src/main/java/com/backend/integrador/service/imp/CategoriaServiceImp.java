@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.backend.integrador.dto.categoria.CategoriaEntradaDTO;
 import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
@@ -27,6 +28,12 @@ public class CategoriaServiceImp implements ICategoriaService{
 
     @Autowired
     private ICategoriaRepository categoriaRepository;
+
+    @Value("${server.endpoint}")
+    private String serverEndpoint;
+
+    @Value("${server.port}")
+    private String serverPort;
     
 
     @Override
@@ -73,7 +80,7 @@ public class CategoriaServiceImp implements ICategoriaService{
             Files.write(path, imagen.getBytes());
             // Creación de la imagen
            
-            return "http://localhost:8080/api/categoria/imagen/"+fileName;
+            return  serverEndpoint+":"+serverPort+"/api/categoria/imagen/"+fileName;
         } catch (IOException e) {
             return "Fallo la creacion de la imagen";
         }

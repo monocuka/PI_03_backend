@@ -1,5 +1,6 @@
 package com.backend.integrador.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,10 +12,17 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
+    @Value("${frontend.port}")
+    private String frontendPort;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173") // or use "*" to allow all origins
+                .allowedOrigins(frontendUrl+":"+frontendPort) // or use "*" to allow all origins
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
