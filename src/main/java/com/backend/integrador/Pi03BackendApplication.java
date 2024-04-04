@@ -87,7 +87,8 @@ public class Pi03BackendApplication implements CommandLineRunner{
 		var idCaracteristicas = List.of(1L, 2L, 3L);
 		Set<Caracteristica> caracteristicas = idCaracteristicas.stream().map(numero -> caracteristicasRepository.findById(numero).orElse(null)).collect(Collectors.toSet());
 		productoRepository.save(new Producto(1L,"Apisonador (canguro) Motor HONDA GX120R Gasolina", "Motor Gasolina: Honda GXR120. Potencia: 4 Hp. Masa operacional: 75 Kg", 50.0, categoriaRepository.findById(3L).orElse(null), caracteristicas));
-		reservaRepository.save(new Reserva(1L, LocalDate.of(2024,3,22), LocalDate.of(2024, 3,26), 2,  productoRepository.findById(1L).orElse(null), usuarioRepository.findById(1L).orElse(null)));
+		reservaRepository.save(new Reserva(1L, LocalDate.of(2024,4,1), LocalDate.of(2024, 4,10), 2,  productoRepository.findById(1L).orElse(null), usuarioRepository.findById(1L).orElse(null)));
+		reservaRepository.save(new Reserva(2L, LocalDate.of(2024,4,20), LocalDate.of(2024, 3,26), 2,  productoRepository.findById(1L).orElse(null), usuarioRepository.findById(1L).orElse(null)));
 
 		idCaracteristicas = List.of( 2L, 3L);
 		caracteristicas = idCaracteristicas.stream().map(numero -> caracteristicasRepository.findById(numero).orElse(null)).collect(Collectors.toSet());

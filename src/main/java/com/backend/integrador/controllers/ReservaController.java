@@ -38,11 +38,7 @@ public class ReservaController {
     @GetMapping("/producto/{id}")
     public ResponseEntity<?> buscarReservaPorProductoId(@PathVariable Long id){
         ReservaSalidaProductoDTO reservasSalida =  reservaService.buscarPorProductoId(id);
-        if ( reservasSalida == null) {
-            return new ResponseEntity<>("Este producto no tiene reservas.", HttpStatus.NOT_FOUND);
-        } else {
-            return ResponseEntity.ok().body(reservasSalida);
-        }
+        return ResponseEntity.ok().body(reservasSalida);
     }
 
     @PostMapping("/guardar")
