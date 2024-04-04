@@ -8,28 +8,20 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.backend.integrador.dto.producto.ProductoDTO;
 import com.backend.integrador.dto.producto.ProductoEntradaDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.dto.producto.mapper.ProductoMapper;
-import com.backend.integrador.dto.reserva.ReservaSalidaDTO;
-import com.backend.integrador.dto.reserva.mapper.ReservaMapper;
 import com.backend.integrador.entity.Caracteristica;
 import com.backend.integrador.entity.Categoria;
 import com.backend.integrador.entity.ImagenProducto;
 import com.backend.integrador.entity.Producto;
-import com.backend.integrador.entity.Reserva;
 import com.backend.integrador.repository.ICaracteristicasRepository;
 import com.backend.integrador.repository.ICategoriaRepository;
 import com.backend.integrador.repository.IImagenProductoRepository;
@@ -39,7 +31,6 @@ import com.backend.integrador.service.IImagenProductoService;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;

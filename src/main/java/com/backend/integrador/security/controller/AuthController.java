@@ -15,8 +15,6 @@ import com.backend.integrador.security.dto.AuthResponse;
 import com.backend.integrador.security.dto.AuthenticationRequest;
 import com.backend.integrador.security.dto.RegisterRequest;
 import com.backend.integrador.security.service.AuthService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController

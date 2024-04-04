@@ -2,7 +2,6 @@ package com.backend.integrador.repository;
 
 import java.time.LocalDate;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +11,6 @@ import com.backend.integrador.entity.Reserva;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface IReservaRepository extends JpaRepository<Reserva, Long> {
@@ -33,6 +31,10 @@ public interface IReservaRepository extends JpaRepository<Reserva, Long> {
     List<Producto> filtrarProductosPorRangoFechasYNombre(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin, @Param("busqueda") String busqueda);
 
     List<Reserva> findByProductoId(Long productoId);
+
+    @Query("SELECT r FROM Reserva r WHERE r.usuario.email = :email")
+    List<Reserva> searchByUsuarioEmail(@Param("email") String email);
+    
 }
 
 
