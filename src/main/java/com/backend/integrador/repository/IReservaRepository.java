@@ -8,8 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.backend.integrador.entity.Producto;
 import com.backend.integrador.entity.Reserva;
-import com.backend.integrador.entity.Usuario;
-
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

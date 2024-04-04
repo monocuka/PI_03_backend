@@ -18,11 +18,6 @@ import com.backend.integrador.security.dto.AuthenticationRequest;
 import com.backend.integrador.security.dto.RegisterRequest;
 import com.backend.integrador.security.service.AuthService;
 import com.backend.integrador.security.service.JWTService;
-import com.fasterxml.jackson.core.JsonLocation;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
