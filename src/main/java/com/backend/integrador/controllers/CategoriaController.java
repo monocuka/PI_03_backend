@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.integrador.dto.categoria.CategoriaSalidaDTO;
 import com.backend.integrador.dto.error.ErrorResponseDTO;
-import com.backend.integrador.dto.producto.ProductoSalidaDTO;
 import com.backend.integrador.service.ICategoriaService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 

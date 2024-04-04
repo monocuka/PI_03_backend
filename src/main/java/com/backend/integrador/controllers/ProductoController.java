@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.backend.integrador.dto.error.ErrorResponseDTO;
 import com.backend.integrador.dto.producto.ProductoSalidaBusquedaSimilar;
 import com.backend.integrador.dto.producto.ProductoSalidaDTO;
-import com.backend.integrador.entity.Producto;
 import com.backend.integrador.service.IProductoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
